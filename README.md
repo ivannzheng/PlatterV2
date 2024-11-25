@@ -1,10 +1,10 @@
 # Spotlight
-![Swift](https://img.shields.io/badge/Swift-v5.9-orange?logo=swift)  
-![Python](https://img.shields.io/badge/Python-v3.12-blue?logo=python)
-![SQLite](https://img.shields.io/badge/SQLite-v3-lightblue?logo=sqlite&logoColor=white)
-![Xcode](https://img.shields.io/badge/Xcode-v14.0-blue?logo=xcode&logoColor=white)  
-![Flask](https://img.shields.io/badge/Flask-v2.3.3-black?logo=flask)  
-![Git](https://img.shields.io/badge/Git-Enabled-orange?logo=git&logoColor=white)
+![Swift](https://img.shields.io/badge/Swift-FA7343?style=for-the-badge&logo=swift&logoColor=white)  
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![Xcode](https://img.shields.io/badge/Xcode-147EFB?style=for-the-badge&logo=xcode&logoColor=white)  
+![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)   
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 
 ## Overview
 Struggling to find the perfect club? Feeling out of the loop on campus? Spotlight has you covered!

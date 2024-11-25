@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C637D5BE2CF543F400EBC5BA /* NewsFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C637D5BD2CF543EC00EBC5BA /* NewsFeedCell.swift */; };
+		C637D5C02CF5440400EBC5BA /* RecommendationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C637D5BF2CF543FF00EBC5BA /* RecommendationCell.swift */; };
 		C66224852CF4534C00662C32 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C66219CC2CF4534C00662C32 /* README.md */; };
 		C671B8DB2CF4567B00396372 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C671B8D42CF4567B00396372 /* LaunchScreen.storyboard */; };
 		C671B8DC2CF4567B00396372 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C671B8D82CF4567B00396372 /* ViewController.swift */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C637D5BD2CF543EC00EBC5BA /* NewsFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedCell.swift; sourceTree = "<group>"; };
+		C637D5BF2CF543FF00EBC5BA /* RecommendationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationCell.swift; sourceTree = "<group>"; };
 		C66219CC2CF4534C00662C32 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C66219CF2CF4534C00662C32 /* Spotlight.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Spotlight.xcodeproj; sourceTree = "<group>"; };
 		C671B8D22CF4567B00396372 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -46,6 +50,8 @@
 		C671B8D92CF4567B00396372 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				C637D5BF2CF543FF00EBC5BA /* RecommendationCell.swift */,
+				C637D5BD2CF543EC00EBC5BA /* NewsFeedCell.swift */,
 				C671B8D42CF4567B00396372 /* LaunchScreen.storyboard */,
 				C671B8D22CF4567B00396372 /* AppDelegate.swift */,
 				C671B8D72CF4567B00396372 /* SceneDelegate.swift */,
@@ -154,8 +160,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C637D5BE2CF543F400EBC5BA /* NewsFeedCell.swift in Sources */,
 				C671B8DC2CF4567B00396372 /* ViewController.swift in Sources */,
 				C671B8DD2CF4567B00396372 /* AppDelegate.swift in Sources */,
+				C637D5C02CF5440400EBC5BA /* RecommendationCell.swift in Sources */,
 				C671B8DE2CF4567B00396372 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

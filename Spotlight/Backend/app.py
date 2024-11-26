@@ -2,7 +2,9 @@ from db import db
 from flask import Flask,request
 import json 
 
+
 app = Flask(__name__)
+db_filename = "spotlight.db"
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///%s" % db_filename
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

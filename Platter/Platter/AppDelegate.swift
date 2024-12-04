@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  Spotlight
+//  Platter
 //
-//  Created by Yuan Gao on 11/25/24.
+//  Created by Yuan Gao on 11/28/24.
 //
 
 import UIKit

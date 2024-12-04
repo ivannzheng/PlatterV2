@@ -127,6 +127,7 @@ class Recipe(db.model):
         self.summary = kwargs.get("summary")
         self.ingredients = kwargs.get("ingredients")
         self.instructions = kwargs.get("instructions")
+        self.image_url = kwargs.get("image_url")
 
     def serialize(self):
         """
@@ -136,8 +137,10 @@ class Recipe(db.model):
             "id": self.id,
             "title": self.title,
             "summary": self.summary,
-            "ingredients": self.ingredients if isinstance(self.ingredients, list) else self.ingredients.split('\n'),  # Handle JSON or plain string
-            "instructions": self.instructions if isinstance(self.instructions, list) else self.instructions.split('\n')
+            "ingredients": self.ingredients, 
+            "instructions": self.instructions,
+            "image_url": self.image_url
+
         }
     
 class SavedRecipe(db.model):
@@ -152,6 +155,17 @@ class SavedRecipe(db.model):
     user = db.relationship('User', back_populates='saved_recipes')
     recipe = db.relationship('Recipe', back_populates='saved_by')
 
+    def __init__(self, **kwargs):
+        self.user_id = kwargs.get("user_id")
+        self.recipe_id = kwargs.get("recipe_id")
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "recipe_id": self.recipe_id
+        }
+
 
 class Group(db.model):
     __tablename__ = 'groups'
@@ -165,6 +179,19 @@ class Group(db.model):
     memberships = db.relationship('GroupMembership', back_populates='group')
     posts = db.relationship('Post', back_populates='group')
 
+    def __init__(self, **kwargs):
+        self.name = kwargs.get("name")
+        self.description = kwargs.get("description")
+        self.image_url = kwargs.get("image_url") 
+
+    def serialize(self):
+        return {
+            "id": self.id, 
+            "name": self.name,
+            "description": self.description,
+            "image_url": self.iamge_url 
+        }
+
 
 class GroupMembership(db.model):
     __tablename__ = 'group_memberships'
@@ -174,6 +201,11 @@ class GroupMembership(db.model):
     
     user = db.relationship('User', back_populates='memberships')
     group = db.relationship('Group', back_populates='memberships')
+
+    def __init__(self, **kwargs):
+        self.user_id = kwargs.get("user_id")
+        self.group_id = kwargs.get("group_id")
+
 
 class Post(db.model):
     __tablename__ = 'posts'
@@ -187,15 +219,31 @@ class Post(db.model):
     group = db.relationship('Group', back_populates='posts')
     comments = db.relationship('Comment', back_populates='post')
 
-class Comment(db.model):
-    __tablename__ = 'comments'
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    def __init__(self, **kwargs):
+        self.title = kwargs.get("title")
+        self.description= kwargs.get("description")
+        self.user_id = kwargs.get("user_id")
+        self.group_id = kwargs.get("group_id")
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "user_id": self.user_id,
+            "group_id": self.group_id
+        }
+
+# #dont think were doing comments
+# class Comment(db.model):
+#     __tablename__ = 'comments'
+#     id = db.Column(db.Integer, primary_key=True)
+#     content = db.Column(db.String, nullable=False)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
     
-    user = db.relationship('User', back_populates='comments')
-    post = db.relationship('Post', back_populates='comments')
+#     user = db.relationship('User', back_populates='comments')
+#     post = db.relationship('Post', back_populates='comments')
 
         
 

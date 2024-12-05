@@ -10,176 +10,318 @@ import UIKit
 class ViewController: UIViewController {
 
     // MARK: - Properties (view)
-//    private let recommendCollectionView = UICollectionView()
-//    private let feedCollectionView = UICollectionView()
     private let recommendedLabel = UILabel()
     private let feedLabel = UILabel()
-    private let bottomNavBar = UIView()
     private let topBar = UIView()
-    
+    private let header = UIView()
+    private let titleLabel = UILabel()
+    private let logoImageView = UIImageView()
+    private let searchButton = UIButton()
+    private let inSeasonLabel = UILabel()
+    private let groupLabel = UILabel()
+    private var collectionView1: UICollectionView!
+    private var collectionView2: UICollectionView!
+    private var collectionView3: UICollectionView!
     
     // MARK: - Properties (data)
+    private var recipes: [Recipe] = Recipe.loadRecipes()
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
         view.backgroundColor = .white
-        setupTopBar()
-        setupBottomNavBar()
+        
+        setupHeader()
+        setupSearchButton()
+        setupLogo()
+        setupTitle()
         setupRecommendLabel()
+        setupCollectionView1()
+        setupInSeasonLabel()
+        setupCollectionView2()
+        setupGroupsLabel()
+        setupCollectionView3()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(bookmarkUpdated), name: NSNotification.Name("BookmarkUpdated"), object: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false) // Ensure navigation bar is shown
+        setupSearchButton() // Re-add the search button
+    }
+
     // MARK: - Set Up Views
-    private func setupBottomNavBar() {
-        bottomNavBar.backgroundColor = .gray
-        bottomNavBar.layer.borderWidth = 0.5
-        bottomNavBar.layer.borderColor = UIColor.black.cgColor
-        bottomNavBar.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(bottomNavBar)
+    private func setupHeader() {
+        header.backgroundColor = UIColor(red: 236/255, green: 159/255, blue: 5/255, alpha: 1.0)
+        header.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(header)
         
         NSLayoutConstraint.activate([
-            bottomNavBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            bottomNavBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            bottomNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomNavBar.heightAnchor.constraint(equalToConstant: 75)
-        ])
-        
-        // Add buttons
-        let homeButton = createNavButton(icon: "house", action: #selector(homeTapped))
-        let myClubsButton = createNavButton(icon: "gift", action: #selector(recommendTapped))
-        let profileButton = createNavButton(icon: "person", action: #selector(profileTapped))
-        
-        let stackView = UIStackView(arrangedSubviews: [homeButton, myClubsButton, profileButton])
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.spacing = 20
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        bottomNavBar.addSubview(stackView)
-        
-        // Constraints for stack view
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: bottomNavBar.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: bottomNavBar.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: bottomNavBar.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomNavBar.bottomAnchor)
+            header.topAnchor.constraint(equalTo: view.topAnchor),
+            header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            header.heightAnchor.constraint(equalToConstant: 140)
         ])
     }
-    
-    private func createNavButton(icon: String, action: Selector) -> UIButton {
-        let button = UIButton(type: .system)
-        var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: icon)
-        config.imagePlacement = .top // Place the image above the text
-        config.imagePadding = 10
-        config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 25, trailing: 0)
-        config.baseForegroundColor = .black // Set the icon color
-        
-        button.configuration = config
-        button.addTarget(self, action: action, for: .touchUpInside)
-        
-        return button
-    }
-    
-    private func setupTopBar() {
-        // Configure the top bar
-        topBar.backgroundColor = .gray
-        topBar.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(topBar)
-        
-        // Constraints for the top bar
-        NSLayoutConstraint.activate([
-            topBar.topAnchor.constraint(equalTo: view.topAnchor),
-            topBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            topBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            topBar.heightAnchor.constraint(equalToConstant: 100) // Adjust height as needed
-        ])
-        
-        // Logo Image
-        let logoImageView = UIImageView(image: UIImage(systemName: "star")) // Replace with your logo image
+
+    private func setupLogo() {
+        logoImageView.image = UIImage(systemName: "star")
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        // App Name Label
-        let appNameLabel = UILabel()
-        appNameLabel.text = "App Name" // Replace with your app name
-        appNameLabel.font = UIFont.boldSystemFont(ofSize: 18)
-        appNameLabel.textAlignment = .center
-        appNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        header.addSubview(logoImageView)
         
-        // Search Button
-        let searchButton = UIButton(type: .system)
+        NSLayoutConstraint.activate([
+            logoImageView.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: 24),
+            logoImageView.centerYAnchor.constraint(equalTo: header.centerYAnchor, constant: 45),
+            logoImageView.widthAnchor.constraint(equalToConstant: 30),
+            logoImageView.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+
+    private func setupTitle() {
+        titleLabel.text = "Platter"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        titleLabel.textAlignment = .center
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        header.addSubview(titleLabel)
+        
+        NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: header.centerXAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: header.centerYAnchor, constant: 45)
+        ])
+    }
+
+    private func setupSearchButton() {
         searchButton.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
         searchButton.tintColor = .black
         searchButton.translatesAutoresizingMaskIntoConstraints = false
         searchButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
-        
-        // Add subviews to the top bar
-        topBar.addSubview(logoImageView)
-        topBar.addSubview(appNameLabel)
-        topBar.addSubview(searchButton)
-        
-        // Constraints for logo
+        searchButton.contentEdgeInsets = UIEdgeInsets(top: -10, left: 0, bottom: 5, right: 0)
         NSLayoutConstraint.activate([
-            logoImageView.leadingAnchor.constraint(equalTo: topBar.leadingAnchor, constant: 10),
-            logoImageView.centerYAnchor.constraint(equalTo: topBar.centerYAnchor, constant: 30),
-            logoImageView.widthAnchor.constraint(equalToConstant: 30), // Adjust size as needed
-            logoImageView.heightAnchor.constraint(equalToConstant: 30)
-        ])
-        
-        // Constraints for app name
-        NSLayoutConstraint.activate([
-            appNameLabel.centerXAnchor.constraint(equalTo: topBar.centerXAnchor),
-            appNameLabel.centerYAnchor.constraint(equalTo: topBar.centerYAnchor, constant: 30)
-        ])
-        
-        // Constraints for search button
-        NSLayoutConstraint.activate([
-            searchButton.trailingAnchor.constraint(equalTo: topBar.trailingAnchor, constant: -10),
-            searchButton.centerYAnchor.constraint(equalTo: topBar.centerYAnchor, constant: 30),
             searchButton.widthAnchor.constraint(equalToConstant: 30),
-            searchButton.heightAnchor.constraint(equalToConstant: 30)
+            searchButton.heightAnchor.constraint(equalToConstant: 30),
         ])
-    }
-    
-    private func setupRecommendLabel() {
-        recommendedLabel.text = "Recommended"
-        recommendedLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        recommendedLabel.textColor = .black
-        recommendedLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(recommendedLabel)
+        navigationController?.navigationBar.layoutMargins = UIEdgeInsets(top: -30, left: 0, bottom: 10, right: 0)
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.view.backgroundColor = .clear
         
-        NSLayoutConstraint.activate([
-            recommendedLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            recommendedLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-        ])
-    }
-    
-    private func setupFeedLabel() {
         
-    }
-    
-    // MARK: - Button Actions
-    @objc private func homeTapped() {
-        print("Home tapped")
-    }
-    
-    @objc private func recommendTapped() {
-        print("Recommend tapped")
-    }
-    
-    @objc private func profileTapped() {
-        print("Profile tapped")
+        let uiBarButtonItem = UIBarButtonItem(customView: searchButton)
+        navigationItem.rightBarButtonItem = uiBarButtonItem
     }
     
     @objc private func searchButtonTapped() {
         print("Search button tapped")
     }
     
-    // MARK: - UICollectionViewDelegate
+    private func setupRecommendLabel() {
+        recommendedLabel.text = "Recommended For You"
+        recommendedLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        recommendedLabel.textColor = .black
+        recommendedLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(recommendedLabel)
+        
+        NSLayoutConstraint.activate([
+            recommendedLabel.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 8),
+            recommendedLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+        ])
+    }
     
-    // MARK: - UICollectionViewDataSource
+    private func setupInSeasonLabel() {
+        inSeasonLabel.text = "Just in Season"
+        inSeasonLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        inSeasonLabel.textColor = .black
+        view.addSubview(inSeasonLabel)
+        inSeasonLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            inSeasonLabel.topAnchor.constraint(equalTo: collectionView1.bottomAnchor, constant: 24),
+            inSeasonLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+        ])
+    }
     
-    // MARK: - UICollectionViewDelegateFlowLayout
+    private func setupGroupsLabel() {
+        groupLabel.text = "Explore Groups"
+        groupLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        groupLabel.textColor = .black
+        view.addSubview(groupLabel)
+        groupLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            groupLabel.topAnchor.constraint(equalTo: collectionView2.bottomAnchor, constant: 24),
+            groupLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+        ])
+    }
+    
+    private func setupCollectionView1() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        collectionView1 = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView1.delegate = self
+        collectionView1.dataSource = self
+        collectionView1.register(RecipeCell.self, forCellWithReuseIdentifier: RecipeCell.reuseIdentifier)
+        collectionView1.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(collectionView1)
+
+        NSLayoutConstraint.activate([
+            collectionView1.topAnchor.constraint(equalTo: recommendedLabel.bottomAnchor, constant: 16),
+            collectionView1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            collectionView1.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView1.heightAnchor.constraint(equalToConstant: 160)
+        ])
+    }
+
+    private func setupCollectionView2() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        collectionView2 = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView2.delegate = self
+        collectionView2.dataSource = self
+        collectionView2.register(RecipeCell.self, forCellWithReuseIdentifier: RecipeCell.reuseIdentifier)
+        collectionView2.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(collectionView2)
+
+        NSLayoutConstraint.activate([
+            collectionView2.topAnchor.constraint(equalTo: inSeasonLabel.bottomAnchor, constant: 16),
+            collectionView2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            collectionView2.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView2.heightAnchor.constraint(equalToConstant: 160)
+        ])
+    }
+
+    private func setupCollectionView3() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        collectionView3 = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView3.delegate = self
+        collectionView3.dataSource = self
+        collectionView3.register(RecipeCell.self, forCellWithReuseIdentifier: RecipeCell.reuseIdentifier)
+        collectionView3.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(collectionView3)
+        
+        NSLayoutConstraint.activate([
+            collectionView3.topAnchor.constraint(equalTo: groupLabel.bottomAnchor, constant: 16),
+            collectionView3.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            collectionView3.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView3.heightAnchor.constraint(equalToConstant: 160)
+        ])
+    }
+    
+    @objc private func bookmarkUpdated() {
+        collectionView1.reloadData()
+        collectionView2.reloadData()
+        collectionView3.reloadData()
+    }
 }
 
+// MARK: - UICollectionViewDataSource
+extension ViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // Check which collectionView is being handled
+        if collectionView == collectionView1 {
+            return recipes.filter { $0.id == "1" || $0.id == "2" }.count
+        } else if collectionView == collectionView2 {
+            return recipes.filter { $0.id == "3" || $0.id == "4" }.count
+        } else if collectionView == collectionView3 {
+            return recipes.filter { $0.id == "5" || $0.id == "6" }.count
+        }
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipeCell.reuseIdentifier, for: indexPath) as? RecipeCell else {
+            return UICollectionViewCell()
+        }
+        
+        // Filter recipes based on the collectionView
+        let filteredRecipes: [Recipe]
+        if collectionView == collectionView1 {
+            filteredRecipes = recipes.filter { $0.id == "1" || $0.id == "2" }
+        } else if collectionView == collectionView2 {
+            filteredRecipes = recipes.filter { $0.id == "3" || $0.id == "4" }
+        } else {
+            filteredRecipes = recipes.filter { $0.id == "5" || $0.id == "6" }
+        }
+        
+        // Get the recipe for the current cell
+        let recipe = filteredRecipes[indexPath.item]
+        
+        // Check if the recipe is bookmarked
+        let savedBookmarks = UserDefaults.standard.array(forKey: "bookmarkedRecipes") as? [String] ?? []
+        let isBookmarked = savedBookmarks.contains(recipe.id)
+        
+        // Configure the cell
+        cell.configure(with: recipe, isBookmarked: isBookmarked)
+        cell.delegate = self // Assign the delegate
+        return cell
+    }
+}
+    
+// MARK: - UICollectionViewDelegate
+extension ViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let filteredRecipes: [Recipe]
+        
+        // Determine which collection view and recipes to use
+        if collectionView == collectionView1 {
+            filteredRecipes = recipes.filter { $0.id == "1" || $0.id == "2" }
+        } else if collectionView == collectionView2 {
+            filteredRecipes = recipes.filter { $0.id == "3" || $0.id == "4" }
+        } else {
+            filteredRecipes = recipes.filter { $0.id == "5" || $0.id == "6" }
+        }
+        
+        // Get the selected recipe
+        let recipe = filteredRecipes[indexPath.item]
+        
+        // Instantiate RecipeDetailViewController
+        let detailVC = RecipeDetailViewController()
+        detailVC.recipe = recipe
+        
+        // Push the detail view controller onto the navigation stack
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension ViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        // Return uniform cell size for all collection views
+        return CGSize(width: 160, height: 160) // Customize size as needed
+    }
+}
+
+extension ViewController: RecipeCellDelegate {
+    func didTapBookmark(for cell: RecipeCell) {
+        guard let indexPath = collectionView1.indexPath(for: cell) else { return } // Adjust this for the correct collection view
+        var recipe = recipes[indexPath.item] // Get the corresponding recipe
+        
+        // Retrieve the current bookmarks
+        var savedBookmarks = UserDefaults.standard.array(forKey: "bookmarkedRecipes") as? [String] ?? []
+        
+        // Add or remove the bookmark
+        if savedBookmarks.contains(recipe.id) {
+            savedBookmarks.removeAll { $0 == recipe.id }
+        } else {
+            savedBookmarks.append(recipe.id)
+        }
+        
+        recipe.saved.toggle()
+        recipes[indexPath.item] = recipe // Update the recipe in the array
+
+        // Save the updated recipes to UserDefaults
+        Recipe.saveRecipes(recipes)
+        
+        // Save the updated bookmarks
+        UserDefaults.standard.set(savedBookmarks, forKey: "bookmarkedRecipes")
+        
+        // Reload the specific cell to update the bookmark state
+        collectionView1.reloadItems(at: [indexPath])
+    }
+}

@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
 
         // 3. Create a view hierarchy programmatically
-        let rootVC = ViewController()
+        let rootVC = ContainerViewController()
         let navController = UINavigationController(rootViewController: rootVC)
 
         // 4. Set the navigation controller as the window's root view controller
@@ -29,6 +29,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // 5. Set the window and call makeKeyAndVisible()
         self.window = window
         window.makeKeyAndVisible()
+        
+        //UserDefaults.standard.removeObject(forKey: Recipe.recipesKey)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

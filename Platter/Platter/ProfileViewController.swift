@@ -15,8 +15,14 @@ class ProfileViewController: UIViewController {
     private var nameLabel = UILabel()
     private var usernameLabel = UILabel()
     private let editProfileButton = UIButton()
+    private let interestsLabel = UILabel()
+    private var interestsCollectionView: UICollectionView!
+    private let savedRecipesLabel = UILabel()
+    private var savedRecipesCollectionView: UICollectionView!
     
     // MARK: - Properties (data)
+    private var interests: [String] = ["Vegan", "Baking", "Vegetarian", "Quick", "Budget-free","Healthy", "Holiday", "+"]
+    private var savedRecipes: [Recipe] = Recipe.loadRecipes().filter { $0.saved }
     
     // MARK: - viewDidLoad
     
@@ -30,6 +36,10 @@ class ProfileViewController: UIViewController {
         setupNameLabel()
         setupUsernameLabel()
         setupEditProfileButton()
+        setupInterestsLabel()
+        setupInterestsCollectionView()
+        setupSavedRecipesLabel()
+        setupSavedRecipesCollectionView()
         
         nameLabel.text = UserDefaults.standard.string(forKey: "name") ?? "Angela Wang"
         usernameLabel.text = UserDefaults.standard.string(forKey: "username") ?? "angelawang"
@@ -100,22 +110,112 @@ class ProfileViewController: UIViewController {
     }
 
     private func setupEditProfileButton() {
-        editProfileButton.setTitle("Edit Profile", for: .normal)
-        editProfileButton.backgroundColor = UIColor(red: 232/255, green: 213/255, blue: 183/255, alpha: 1.0)
-        editProfileButton.setTitleColor(.black, for: .normal)
-        editProfileButton.layer.cornerRadius = 16
-        editProfileButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        editProfileButton.contentHorizontalAlignment = .center
+        // Set the settings icon
+        let settingsImage = UIImage(systemName: "gearshape")?.withRenderingMode(.alwaysTemplate)
+        editProfileButton.setImage(settingsImage, for: .normal)
+        editProfileButton.imageView?.contentMode = .scaleAspectFit
+        editProfileButton.tintColor = .black // Set icon color
+        editProfileButton.clipsToBounds = true
         editProfileButton.addTarget(self, action: #selector(pushEditProfile), for: .touchUpInside)
         
-        view.addSubview(editProfileButton)
+//        view.addSubview(editProfileButton)
         editProfileButton.translatesAutoresizingMaskIntoConstraints = false
+        editProfileButton.imageEdgeInsets = UIEdgeInsets(top: -15, left: 0, bottom: 10, right: -10)
+        NSLayoutConstraint.activate([
+            editProfileButton.widthAnchor.constraint(equalToConstant: 30),
+            editProfileButton.heightAnchor.constraint(equalToConstant: 44)
+        ])
+        
+        let barButtonItem = UIBarButtonItem(customView: editProfileButton)
+        navigationItem.rightBarButtonItem = barButtonItem
+    }
+    
+    private func setupInterestsLabel() {
+        interestsLabel.text = "Interests"
+        interestsLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        interestsLabel.textColor = .black
+
+        view.addSubview(interestsLabel)
+        interestsLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            editProfileButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
-            editProfileButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            editProfileButton.widthAnchor.constraint(equalToConstant: 95),
-            editProfileButton.heightAnchor.constraint(equalToConstant: 40)
+            interestsLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 16),
+            interestsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24)
+        ])
+    }
+    
+    private func setupInterestsCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 8
+        layout.minimumInteritemSpacing = 16
+
+        // Create a container view for the collection view
+        let collectionContainer = UIView()
+        collectionContainer.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1.0)
+        collectionContainer.layer.cornerRadius = 15 // Round corners
+        collectionContainer.clipsToBounds = true // Ensure corners are clipped
+        view.addSubview(collectionContainer)
+        collectionContainer.translatesAutoresizingMaskIntoConstraints = false
+
+        // Configure the collection view
+        interestsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        interestsCollectionView.backgroundColor = .clear // Transparent to show container view's color
+        interestsCollectionView.delegate = self
+        interestsCollectionView.dataSource = self
+        interestsCollectionView.register(InterestCell.self, forCellWithReuseIdentifier: InterestCell.reuseIdentifier)
+        collectionContainer.addSubview(interestsCollectionView)
+        interestsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Constraints for the container view
+        NSLayoutConstraint.activate([
+            collectionContainer.topAnchor.constraint(equalTo: interestsLabel.bottomAnchor, constant: 8),
+            collectionContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            collectionContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            collectionContainer.heightAnchor.constraint(equalToConstant: 148) // Increased height for padding
+        ])
+
+        // Constraints for the collection view inside the container view
+        NSLayoutConstraint.activate([
+            interestsCollectionView.topAnchor.constraint(equalTo: collectionContainer.topAnchor, constant: 10),
+            interestsCollectionView.leadingAnchor.constraint(equalTo: collectionContainer.leadingAnchor, constant: 10),
+            interestsCollectionView.trailingAnchor.constraint(equalTo: collectionContainer.trailingAnchor, constant: -10),
+            interestsCollectionView.bottomAnchor.constraint(equalTo: collectionContainer.bottomAnchor, constant: -10)
+        ])
+    }
+    
+    private func setupSavedRecipesLabel() {
+        savedRecipesLabel.text = "Saved Recipes"
+        savedRecipesLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        savedRecipesLabel.textColor = .black
+        view.addSubview(savedRecipesLabel)
+        savedRecipesLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            savedRecipesLabel.topAnchor.constraint(equalTo: interestsCollectionView.bottomAnchor, constant: 24),
+            savedRecipesLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24)
+        ])
+    }
+
+    private func setupSavedRecipesCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 16
+        layout.minimumInteritemSpacing = 16
+        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 48) / 2, height: 160)
+
+        savedRecipesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        savedRecipesCollectionView.backgroundColor = .clear
+        savedRecipesCollectionView.delegate = self
+        savedRecipesCollectionView.dataSource = self
+        savedRecipesCollectionView.register(RecipeCell.self, forCellWithReuseIdentifier: RecipeCell.reuseIdentifier)
+        view.addSubview(savedRecipesCollectionView)
+        savedRecipesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            savedRecipesCollectionView.topAnchor.constraint(equalTo: savedRecipesLabel.bottomAnchor, constant: 16),
+            savedRecipesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            savedRecipesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            savedRecipesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
@@ -150,3 +250,84 @@ protocol EditProfileDelegate: AnyObject {
     func didUpdateProfile(name: String, username: String)
 }
 
+// MARK: - UICollectionViewDataSource for Saved Recipes
+extension ProfileViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == interestsCollectionView {
+            return interests.count
+        } else if collectionView == savedRecipesCollectionView {
+            return savedRecipes.count
+        }
+        return 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == interestsCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InterestCell.reuseIdentifier, for: indexPath) as! InterestCell
+            cell.configure(with: interests[indexPath.item])
+            return cell
+        } else if collectionView == savedRecipesCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipeCell.reuseIdentifier, for: indexPath) as! RecipeCell
+            let recipe = savedRecipes[indexPath.item]
+            cell.configure(with: recipe, isBookmarked: recipe.saved)
+            cell.delegate = self // Assign self as the delegate
+            return cell
+        }
+        return UICollectionViewCell()
+    }
+}
+
+// MARK: - UICollectionViewDelegate for Saved Recipes
+extension ProfileViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == savedRecipesCollectionView {
+            let selectedRecipe = savedRecipes[indexPath.item]
+            let detailVC = RecipeDetailViewController()
+            detailVC.recipe = selectedRecipe
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
+    }
+}
+
+// MARK: - RecipeCellDelegate
+extension ProfileViewController: RecipeCellDelegate {
+    func didTapBookmark(for cell: RecipeCell) {
+        guard let indexPath = savedRecipesCollectionView.indexPath(for: cell) else { return }
+        
+        // Update the saved state of the recipe
+        var recipe = savedRecipes[indexPath.item]
+        recipe.saved.toggle()
+        
+        // Update the saved recipes array and save to UserDefaults
+        if recipe.saved {
+            savedRecipes.append(recipe)
+        } else {
+            savedRecipes.removeAll { $0.id == recipe.id }
+        }
+        Recipe.saveRecipes(savedRecipes)
+        
+        // Reload collection view to reflect changes
+        savedRecipesCollectionView.reloadData()
+        
+        // Notify other parts of the app
+        NotificationCenter.default.post(name: NSNotification.Name("BookmarkUpdated"), object: nil)
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension ProfileViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == interestsCollectionView {
+            // Apply the size logic for the interests collection view
+            let text = interests[indexPath.item]
+            let width = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16)]).width + 24
+            return CGSize(width: width, height: 36)
+        } else if collectionView == savedRecipesCollectionView {
+            // Apply the size logic for the saved recipes collection view
+            let width = (UIScreen.main.bounds.width - 48) / 2
+            return CGSize(width: width, height: 160)
+        } else {
+            return CGSize(width: 100, height: 100) // Default size for any other collection view
+        }
+    }
+}

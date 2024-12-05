@@ -104,7 +104,7 @@ class ProfileViewController: UIViewController {
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            usernameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10),
+            usernameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
             usernameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }

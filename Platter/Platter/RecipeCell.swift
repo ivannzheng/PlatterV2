@@ -21,7 +21,7 @@ class RecipeCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupImageView()
-        setupTitleLabel()
+        //setupTitleLabel()
         setupBookmarkButton()
     }
         

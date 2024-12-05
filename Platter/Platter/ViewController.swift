@@ -162,16 +162,19 @@ class ViewController: UIViewController {
     private func setupCollectionView1() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 24
         collectionView1 = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView1.showsHorizontalScrollIndicator = false
         collectionView1.delegate = self
         collectionView1.dataSource = self
         collectionView1.register(RecipeCell.self, forCellWithReuseIdentifier: RecipeCell.reuseIdentifier)
+        collectionView1.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         collectionView1.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView1)
 
         NSLayoutConstraint.activate([
             collectionView1.topAnchor.constraint(equalTo: recommendedLabel.bottomAnchor, constant: 16),
-            collectionView1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            collectionView1.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView1.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView1.heightAnchor.constraint(equalToConstant: 160)
         ])
@@ -180,16 +183,19 @@ class ViewController: UIViewController {
     private func setupCollectionView2() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 24
         collectionView2 = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView2.showsHorizontalScrollIndicator = false
         collectionView2.delegate = self
         collectionView2.dataSource = self
         collectionView2.register(RecipeCell.self, forCellWithReuseIdentifier: RecipeCell.reuseIdentifier)
         collectionView2.translatesAutoresizingMaskIntoConstraints = false
+        collectionView2.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         view.addSubview(collectionView2)
 
         NSLayoutConstraint.activate([
             collectionView2.topAnchor.constraint(equalTo: inSeasonLabel.bottomAnchor, constant: 16),
-            collectionView2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            collectionView2.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView2.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView2.heightAnchor.constraint(equalToConstant: 160)
         ])
@@ -198,16 +204,19 @@ class ViewController: UIViewController {
     private func setupCollectionView3() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 24
         collectionView3 = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView3.showsHorizontalScrollIndicator = false
         collectionView3.delegate = self
         collectionView3.dataSource = self
         collectionView3.register(RecipeCell.self, forCellWithReuseIdentifier: RecipeCell.reuseIdentifier)
+        collectionView3.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         collectionView3.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView3)
         
         NSLayoutConstraint.activate([
             collectionView3.topAnchor.constraint(equalTo: groupLabel.bottomAnchor, constant: 16),
-            collectionView3.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            collectionView3.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView3.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView3.heightAnchor.constraint(equalToConstant: 160)
         ])
@@ -225,11 +234,11 @@ extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // Check which collectionView is being handled
         if collectionView == collectionView1 {
-            return recipes.filter { $0.id == "1" || $0.id == "2" }.count
+            return recipes.filter { $0.id == "1" || $0.id == "2" || $0.id == "7"}.count
         } else if collectionView == collectionView2 {
-            return recipes.filter { $0.id == "3" || $0.id == "4" }.count
+            return recipes.filter { $0.id == "3" || $0.id == "4" || $0.id == "8" }.count
         } else if collectionView == collectionView3 {
-            return recipes.filter { $0.id == "5" || $0.id == "6" }.count
+            return recipes.filter { $0.id == "5" || $0.id == "6" || $0.id == "9"}.count
         }
         return 0
     }
@@ -242,11 +251,11 @@ extension ViewController: UICollectionViewDataSource {
         // Filter recipes based on the collectionView
         let filteredRecipes: [Recipe]
         if collectionView == collectionView1 {
-            filteredRecipes = recipes.filter { $0.id == "1" || $0.id == "2" }
+            filteredRecipes = recipes.filter { $0.id == "1" || $0.id == "2" || $0.id == "7"}
         } else if collectionView == collectionView2 {
-            filteredRecipes = recipes.filter { $0.id == "3" || $0.id == "4" }
+            filteredRecipes = recipes.filter { $0.id == "3" || $0.id == "4" || $0.id == "8"}
         } else {
-            filteredRecipes = recipes.filter { $0.id == "5" || $0.id == "6" }
+            filteredRecipes = recipes.filter { $0.id == "5" || $0.id == "6" || $0.id == "9"}
         }
         
         // Get the recipe for the current cell
@@ -270,11 +279,11 @@ extension ViewController: UICollectionViewDelegate {
         
         // Determine which collection view and recipes to use
         if collectionView == collectionView1 {
-            filteredRecipes = recipes.filter { $0.id == "1" || $0.id == "2" }
+            filteredRecipes = recipes.filter { $0.id == "1" || $0.id == "2" || $0.id == "7"}
         } else if collectionView == collectionView2 {
-            filteredRecipes = recipes.filter { $0.id == "3" || $0.id == "4" }
+            filteredRecipes = recipes.filter { $0.id == "3" || $0.id == "4" || $0.id == "8"}
         } else {
-            filteredRecipes = recipes.filter { $0.id == "5" || $0.id == "6" }
+            filteredRecipes = recipes.filter { $0.id == "5" || $0.id == "6" || $0.id == "9"}
         }
         
         // Get the selected recipe

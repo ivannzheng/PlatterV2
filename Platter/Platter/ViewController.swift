@@ -117,7 +117,8 @@ class ViewController: UIViewController {
     }
     
     @objc private func searchButtonTapped() {
-        print("Search button tapped")
+        let searchVC = SearchVC() // Instantiate the SearchVC
+        navigationController?.pushViewController(searchVC, animated: true) // Push to the navigation stack
     }
     
     private func setupRecommendLabel() {

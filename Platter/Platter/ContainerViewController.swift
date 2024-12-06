@@ -53,7 +53,7 @@ class ContainerViewController: UIViewController {
         // Add the bottom nav bar
         bottomNavBar.backgroundColor = UIColor(red: 232/255, green: 213/255, blue: 183/255, alpha: 1.0)
         bottomNavBar.layer.borderWidth = 0.5
-        bottomNavBar.layer.borderColor = UIColor.black.cgColor
+        bottomNavBar.layer.borderColor = UIColor.gray.cgColor
         bottomNavBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bottomNavBar)
         

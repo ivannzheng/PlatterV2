@@ -5,11 +5,9 @@ import bcrypt
 
 from flask_sqlalchemy import SQLAlchemy
 
-
-
 db = SQLAlchemy()
 
-class User(db.model):
+class User(db.Model):
     """
     User Model
     """
@@ -31,9 +29,7 @@ class User(db.model):
     #Relationships 
     saved_recipes = db.relationship('SavedRecipe', back_populates='user')
     posts = db.relationship('Post', back_populates='author')
-    comments = db.relationship('Comment', back_populates='user')
     memberships = db.relationship('GroupMembership', back_populates='user')
-
 
 
     def __init__(self, **kwargs):
@@ -105,7 +101,7 @@ class User(db.model):
             "username": self.username
         }
     
-class Recipe(db.model):
+class Recipe(db.Model):
     __tablename__ = 'recipes'
     id = db.Column(db.Integer, primary_key=True)
 
@@ -143,7 +139,7 @@ class Recipe(db.model):
 
         }
     
-class SavedRecipe(db.model):
+class SavedRecipe(db.Model):
     __tablename__ = 'saved_recipes'
     id = db.Column(db.Integer, primary_key=True)
 
@@ -167,7 +163,7 @@ class SavedRecipe(db.model):
         }
 
 
-class Group(db.model):
+class Group(db.Model):
     __tablename__ = 'groups'
     id = db.Column(db.Integer, primary_key=True)
 
@@ -193,7 +189,7 @@ class Group(db.model):
         }
 
 
-class GroupMembership(db.model):
+class GroupMembership(db.Model):
     __tablename__ = 'group_memberships'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -207,7 +203,7 @@ class GroupMembership(db.model):
         self.group_id = kwargs.get("group_id")
 
 
-class Post(db.model):
+class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
@@ -217,7 +213,6 @@ class Post(db.model):
     
     author = db.relationship('User', back_populates='posts')
     group = db.relationship('Group', back_populates='posts')
-    comments = db.relationship('Comment', back_populates='post')
 
     def __init__(self, **kwargs):
         self.title = kwargs.get("title")
@@ -234,16 +229,8 @@ class Post(db.model):
             "group_id": self.group_id
         }
 
-# #dont think were doing comments
-# class Comment(db.model):
-#     __tablename__ = 'comments'
-#     id = db.Column(db.Integer, primary_key=True)
-#     content = db.Column(db.String, nullable=False)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-#     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-    
-#     user = db.relationship('User', back_populates='comments')
-#     post = db.relationship('Post', back_populates='comments')
+
+
 
         
 

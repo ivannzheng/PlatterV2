@@ -138,7 +138,9 @@ def post_recipe():
             summary=data['summary'],
             ingredients=data['ingredients'],
             instructions=data['instructions'],
-            image_url=data.get('image_url')
+            imageUrl=data.get('imageUrl'),
+            type=data["type"],
+            saved=data["saved"]
         )
         db.session.add(recipe)
         db.session.commit()
@@ -158,6 +160,20 @@ def save_recipe():
     db.session.add(saved_recipe)
     db.session.commit()
     return json.dumps(saved_recipe.serialize()), 201
+
+@app.route('/recipes/<int:recipe_id>/', methods=['DELETE'])
+def delete_recipe(recipe_id):
+    """
+    Deletes a specific recipe by ID.
+    """
+    recipe = Recipe.query.get(recipe_id)
+    if not recipe:
+        return failure_response("Recipe not found", 404)
+
+    db.session.delete(recipe)
+    db.session.commit()
+    return success_response({"message": f"Recipe with ID {recipe_id} has been deleted."}, 200)
+
 
 # ===================================
 # Community Routes
@@ -243,7 +259,7 @@ def update_profile():
     user.first_name = data.get('first_name', user.first_name)
     user.last_name = data.get('last_name', user.last_name)
     user.username = data.get('username', user.username)
-    user.image_url = data.get('image_url', user.image_url)
+    user.imageUrl = data.get('imageUrl', user.imageUrl)
     db.session.commit()
     return json.dumps(user.serialize()), 200
 

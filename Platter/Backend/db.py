@@ -111,6 +111,8 @@ class Recipe(db.Model):
     ingredients = db.Column(db.JSON, nullable=False) 
     instructions = db.Column(db.JSON, nullable=False)
     image_url = db.Column(db.String, nullable=True)
+    type = db.Column(db.String, nullable=False)
+    is_saved = db.Column(db.Boolean, nullabe=False, default=False)
 
     #Relationship
     saved_by = db.relationship('SavedRecipe', back_populates='recipe', lazy=True)
@@ -135,8 +137,9 @@ class Recipe(db.Model):
             "summary": self.summary,
             "ingredients": self.ingredients, 
             "instructions": self.instructions,
-            "image_url": self.image_url
-
+            "image_url": self.image_url,
+            "type": self.type,
+            "is_saved": self.is_saved
         }
     
 class SavedRecipe(db.Model):
@@ -208,6 +211,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
     
@@ -226,19 +230,6 @@ class Post(db.Model):
             "title": self.title,
             "description": self.description,
             "user_id": self.user_id,
-            "group_id": self.group_id
+            "group_id": self.group_id,
+            "created_at": self.created_at.isoformat() 
         }
-
-
-
-
-        
-
-
-
-    
-        
-
-
-
-

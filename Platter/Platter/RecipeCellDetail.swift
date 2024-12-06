@@ -57,17 +57,21 @@ class RecipeDetailViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
 
+        // Constraints for the scroll view
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor), // Start below headerView
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
 
+        // Constraints for the content view inside the scroll view
+        NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor) // Important for dynamic sizing
         ])
     }
     
@@ -76,22 +80,21 @@ class RecipeDetailViewController: UIViewController {
         headerView.backgroundColor = UIColor(red: 0.925, green: 0.624, blue: 0.019, alpha: 1.0)
         headerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(headerView) // Add to the main view
-
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        titleLabel.font = UIFont.avenirNext("DemiBold", size: 32)
         titleLabel.textColor = .black
         titleLabel.numberOfLines = 0
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.topAnchor), // Pin to the top of the view
+            headerView.topAnchor.constraint(equalTo: view.topAnchor),
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 180),
 
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 24),
+            titleLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -24),
         ])
     }
     
@@ -127,12 +130,13 @@ class RecipeDetailViewController: UIViewController {
     
     private func setupIngredientsSection() {
         ingredientsTitleLabel.text = "Ingredients"
-        ingredientsTitleLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        ingredientsTitleLabel.font = UIFont.avenirNext("Bold", size: 16)
         ingredientsTitleLabel.textColor = .black
         ingredientsTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(ingredientsTitleLabel)
         
         ingredientsLabel.font = UIFont.systemFont(ofSize: 14)
+        ingredientsLabel.font = UIFont.avenirNext("Medium", size: 16)
         ingredientsLabel.textColor = .black
         ingredientsLabel.numberOfLines = 0
         ingredientsLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -140,23 +144,23 @@ class RecipeDetailViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             ingredientsTitleLabel.topAnchor.constraint(equalTo: imageStackView.bottomAnchor, constant: 16),
-            ingredientsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            ingredientsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             
             ingredientsLabel.topAnchor.constraint(equalTo: ingredientsTitleLabel.bottomAnchor, constant: 8),
-            ingredientsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            ingredientsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+            ingredientsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            ingredientsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
         ])
     }
 
     // MARK: - Setup Instructions Section
     private func setupInstructionsSection() {
         instructionsTitleLabel.text = "Instructions"
-        instructionsTitleLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        instructionsTitleLabel.font = UIFont.avenirNext("Bold", size: 16)
         instructionsTitleLabel.textColor = .black
         instructionsTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(instructionsTitleLabel)
         
-        instructionsLabel.font = UIFont.systemFont(ofSize: 14)
+        instructionsLabel.font = UIFont.avenirNext("Medium", size: 16)
         instructionsLabel.textColor = .black
         instructionsLabel.numberOfLines = 0
         instructionsLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -164,12 +168,12 @@ class RecipeDetailViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             instructionsTitleLabel.topAnchor.constraint(equalTo: ingredientsLabel.bottomAnchor, constant: 16),
-            instructionsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            instructionsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             
             instructionsLabel.topAnchor.constraint(equalTo: instructionsTitleLabel.bottomAnchor, constant: 8),
-            instructionsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            instructionsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            instructionsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+            instructionsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            instructionsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            instructionsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
         ])
     }
 
@@ -206,7 +210,7 @@ class RecipeDetailViewController: UIViewController {
     }
 
     private func setupSummaryLabel() {
-        summaryLabel.font = UIFont.systemFont(ofSize: 14)
+        summaryLabel.font = UIFont.avenirNext("Italic", size: 16)
         summaryLabel.textColor = .darkGray
         summaryLabel.numberOfLines = 0
         summaryLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -214,8 +218,8 @@ class RecipeDetailViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             summaryLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 8),
-            summaryLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            summaryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            summaryLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            summaryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
         ])
     }
     
@@ -228,9 +232,9 @@ class RecipeDetailViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             imageStackView.topAnchor.constraint(equalTo: summaryLabel.bottomAnchor, constant: 16),
-            imageStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            imageStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            imageStackView.heightAnchor.constraint(equalToConstant: 100)
+            imageStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            imageStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            imageStackView.heightAnchor.constraint(equalToConstant: 100),
         ])
     }
     

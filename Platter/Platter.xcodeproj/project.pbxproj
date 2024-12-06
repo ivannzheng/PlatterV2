@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C62F8D582D02B7F3000456AD /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C62F8D572D02B7F3000456AD /* Alamofire */; };
 		C6FC6F8B2CFEC6A300B05DCC /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = C6FC6F8A2CFEC6A300B05DCC /* SDWebImage */; };
 		C6FC6F8D2CFEC6A300B05DCC /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C6FC6F8C2CFEC6A300B05DCC /* SDWebImageMapKit */; };
 /* End PBXBuildFile section */
@@ -41,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C62F8D582D02B7F3000456AD /* Alamofire in Frameworks */,
 				C6FC6F8D2CFEC6A300B05DCC /* SDWebImageMapKit in Frameworks */,
 				C6FC6F8B2CFEC6A300B05DCC /* SDWebImage in Frameworks */,
 			);
@@ -87,6 +89,7 @@
 			packageProductDependencies = (
 				C6FC6F8A2CFEC6A300B05DCC /* SDWebImage */,
 				C6FC6F8C2CFEC6A300B05DCC /* SDWebImageMapKit */,
+				C62F8D572D02B7F3000456AD /* Alamofire */,
 			);
 			productName = Platter;
 			productReference = C6FC6F6B2CF9658100B05DCC /* Platter.app */;
@@ -118,6 +121,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				C6FC6F892CFEC6A300B05DCC /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				C62F8D562D02B7F3000456AD /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C6FC6F6C2CF9658100B05DCC /* Products */;
@@ -347,6 +351,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C62F8D562D02B7F3000456AD /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
 		C6FC6F892CFEC6A300B05DCC /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage";
@@ -358,6 +370,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C62F8D572D02B7F3000456AD /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C62F8D562D02B7F3000456AD /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		C6FC6F8A2CFEC6A300B05DCC /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C6FC6F892CFEC6A300B05DCC /* XCRemoteSwiftPackageReference "SDWebImage" */;

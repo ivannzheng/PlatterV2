@@ -4,8 +4,19 @@ import os
 import bcrypt
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text 
 
 db = SQLAlchemy()
+
+
+def drop_table(table_name):
+    """
+    Drops a table dynamically by name.
+    """
+    from app import db  # Ensure the app's `db` is imported here
+    with db.engine.connect() as connection:
+        connection.execute(text(f"DROP TABLE IF EXISTS {table_name};"))
+    print(f"Dropped the '{table_name}' table successfully.")
 
 class User(db.Model):
     """
@@ -19,7 +30,7 @@ class User(db.Model):
     last_name = db.Column(db.String, nullable=False)
     username = db.Column(db.String, nullable=False)
     password_digest = db.Column(db.String, nullable=False)
-    image_url = db.Column(db.String, nullable=True)
+    imageUrl = db.Column(db.String, nullable=True)
 
     #Session Information 
     session_token = db.Column(db.String, nullable=False, unique=True)
@@ -110,12 +121,13 @@ class Recipe(db.Model):
     summary = db.Column(db.String, nullable=False)
     ingredients = db.Column(db.JSON, nullable=False) 
     instructions = db.Column(db.JSON, nullable=False)
-    image_url = db.Column(db.String, nullable=True)
+    imageUrl = db.Column(db.String, nullable=True)
     type = db.Column(db.String, nullable=False)
-    is_saved = db.Column(db.Boolean, nullabe=False, default=False)
+    saved = db.Column(db.Boolean, nullable=False, default=False)
 
     #Relationship
     saved_by = db.relationship('SavedRecipe', back_populates='recipe', lazy=True)
+
 
     def __init__(self, **kwargs):
         """
@@ -125,7 +137,10 @@ class Recipe(db.Model):
         self.summary = kwargs.get("summary")
         self.ingredients = kwargs.get("ingredients")
         self.instructions = kwargs.get("instructions")
-        self.image_url = kwargs.get("image_url")
+        self.imageUrl = kwargs.get("imageUrl")
+        self.type = kwargs.get("type")
+        self.saved = kwargs.get("saved")
+        
 
     def serialize(self):
         """
@@ -137,9 +152,9 @@ class Recipe(db.Model):
             "summary": self.summary,
             "ingredients": self.ingredients, 
             "instructions": self.instructions,
-            "image_url": self.image_url,
+            "imageUrl": self.imageUrl,
             "type": self.type,
-            "is_saved": self.is_saved
+            "saved": self.saved
         }
     
 class SavedRecipe(db.Model):
@@ -173,7 +188,7 @@ class Group(db.Model):
     #Group Info
     name = db.Column(db.String, unique=True, nullable=False)
     description = db.Column(db.String)
-    image_url = db.Column(db.String, nullable=True)
+    imageUrl = db.Column(db.String, nullable=True)
     
     memberships = db.relationship('GroupMembership', back_populates='group')
     posts = db.relationship('Post', back_populates='group')
@@ -181,14 +196,14 @@ class Group(db.Model):
     def __init__(self, **kwargs):
         self.name = kwargs.get("name")
         self.description = kwargs.get("description")
-        self.image_url = kwargs.get("image_url") 
+        self.imageUrl = kwargs.get("imageUrl") 
 
     def serialize(self):
         return {
             "id": self.id, 
             "name": self.name,
             "description": self.description,
-            "image_url": self.iamge_url 
+            "imageUrl": self.iamge_url 
         }
 
 
@@ -211,7 +226,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
+    time = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
     
@@ -231,5 +246,5 @@ class Post(db.Model):
             "description": self.description,
             "user_id": self.user_id,
             "group_id": self.group_id,
-            "created_at": self.created_at.isoformat() 
+            "time": self.time.isoformat() 
         }

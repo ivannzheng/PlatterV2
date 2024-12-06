@@ -19,6 +19,8 @@ class ProfileViewController: UIViewController {
     private var interestsCollectionView: UICollectionView!
     private let savedRecipesLabel = UILabel()
     private var savedRecipesCollectionView: UICollectionView!
+    private let refreshControl = UIRefreshControl()
+    private let logoImageView = UIImageView()
     
     // MARK: - Properties (data)
     private var interests: [String] = ["Vegan", "Baking", "Vegetarian", "Quick", "Budget-free","Healthy", "Holiday", "+"]
@@ -40,12 +42,23 @@ class ProfileViewController: UIViewController {
         setupInterestsCollectionView()
         setupSavedRecipesLabel()
         setupSavedRecipesCollectionView()
+        setupLogo()
         
         nameLabel.text = UserDefaults.standard.string(forKey: "name") ?? "Angela Wang"
         usernameLabel.text = UserDefaults.standard.string(forKey: "username") ?? "angelawang"
+        NotificationCenter.default.addObserver(self, selector: #selector(updateSavedRecipes), name: NSNotification.Name("BookmarkUpdated"), object: nil)
     }
     
     // MARK: - Set Up Views
+    
+    @objc private func updateSavedRecipes() {
+        savedRecipes = Recipe.loadRecipes().filter { $0.saved }
+        savedRecipesCollectionView.reloadData()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("BookmarkUpdated"), object: nil)
+    }
     
     private func setupHeader() {
         header.backgroundColor = UIColor(red: 236/255, green: 159/255, blue: 5/255, alpha: 1.0)
@@ -57,6 +70,21 @@ class ProfileViewController: UIViewController {
             header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             header.heightAnchor.constraint(equalToConstant: 140)
+        ])
+    }
+    
+    private func setupLogo() {
+        logoImageView.image = UIImage(named: "logo")
+        logoImageView.contentMode = .scaleAspectFit
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        header.addSubview(logoImageView)
+        
+        NSLayoutConstraint.activate([
+            logoImageView.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: 24),
+            logoImageView.centerYAnchor.constraint(equalTo: header.centerYAnchor, constant: 45),
+            logoImageView.widthAnchor.constraint(equalToConstant: 40),
+            logoImageView.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
     
@@ -211,12 +239,22 @@ class ProfileViewController: UIViewController {
         view.addSubview(savedRecipesCollectionView)
         savedRecipesCollectionView.translatesAutoresizingMaskIntoConstraints = false
 
+        savedRecipesCollectionView.refreshControl = refreshControl
+            refreshControl.addTarget(self, action: #selector(refreshSavedRecipes), for: .valueChanged)
+        
         NSLayoutConstraint.activate([
             savedRecipesCollectionView.topAnchor.constraint(equalTo: savedRecipesLabel.bottomAnchor, constant: 16),
             savedRecipesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             savedRecipesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             savedRecipesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+    
+    @objc private func refreshSavedRecipes() {
+        // Reload saved recipes from UserDefaults
+        savedRecipes = Recipe.loadRecipes().filter { $0.saved }
+        savedRecipesCollectionView.reloadData()
+        refreshControl.endRefreshing()
     }
     
     // MARK: - View Layout

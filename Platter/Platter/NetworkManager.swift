@@ -31,4 +31,51 @@ class NetworkManager {
                 }
             }
     }
+    
+    // MARK: - Requests
+    func fetchPosts(completion: @escaping ([Post]) -> Void) {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        // convert keys to camel case
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        
+        let endPoint = "https://chatdev-wuzwgwv35a-ue.a.run.app/api/posts/create/"
+        AF.request(endPoint, method: .get)
+            .validate()
+            .responseDecodable(of: [Post].self, decoder: decoder) { response in
+                switch response.result {
+                    case .success(let posts):
+                    completion(posts)
+                    print("Successfully fetched \(posts.count) posts")
+                    case .failure(let error):
+                        print("Error in NetworkManager.fetchPosts: ", error)
+                }
+            }
+    }
+    
+    func addToPosts (post: Post, completion: @escaping ((Post) -> Void)) {
+        let parameters: Parameters = [
+            "id": post.id,
+            "time": post.time,
+            "name": post.name,
+            "avatar": post.avatar,
+            "title": post.title,
+            "description": post.description,
+        ]
+        let endPoint = "https://chatdev-wuzwgwv35a-ue.a.run.app/api/posts/create/"
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        
+        AF.request(endPoint, method: .post, parameters: parameters)
+            .validate()
+            .responseDecodable(of: Post.self, decoder: decoder) { response in
+                switch response.result {
+                    case .success(let post):
+                        completion(post)
+                    print("Successfully added \(post.description) to posts")
+                    case .failure(let error):
+                        print("Error in NetworkManager.addToPosts: ", error)
+                }
+            }
+    }
 }

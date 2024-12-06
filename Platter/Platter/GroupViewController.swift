@@ -16,6 +16,7 @@ class GroupViewController: UIViewController {
     private let createPostButton = UIButton()
     private var postsCollectionView: UICollectionView!
     private var posts: [Post] = Post.dummyPosts
+    private let logoImageView = UIImageView()
 
     // MARK: - Data
     private var groups: [String] = ["Ithaca Bakers", "Global Cuisine Explorers", "Bakers Unite"]
@@ -31,6 +32,7 @@ class GroupViewController: UIViewController {
         setupNewsFeedLabel()
         setupCreatePostButton()
         setupPostsCollectionView()
+        setupLogo()
     }
 
     // MARK: - Setup Views
@@ -47,6 +49,21 @@ class GroupViewController: UIViewController {
         ])
     }
     
+    private func setupLogo() {
+        logoImageView.image = UIImage(named: "logo")
+        logoImageView.contentMode = .scaleAspectFit
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        header.addSubview(logoImageView)
+        
+        NSLayoutConstraint.activate([
+            logoImageView.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: 24),
+            logoImageView.centerYAnchor.constraint(equalTo: header.centerYAnchor, constant: 45),
+            logoImageView.widthAnchor.constraint(equalToConstant: 40),
+            logoImageView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
     private func setupTitle() {
         titleLabel.text = "Groups"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
@@ -56,7 +73,7 @@ class GroupViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: header.bottomAnchor, constant: -48)
+            titleLabel.topAnchor.constraint(equalTo: header.bottomAnchor, constant: -40)
         ])
     }
 

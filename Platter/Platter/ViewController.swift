@@ -67,7 +67,7 @@ class ViewController: UIViewController {
     }
 
     private func setupLogo() {
-        logoImageView.image = UIImage(systemName: "star")
+        logoImageView.image = UIImage(named: "logo")
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -76,8 +76,8 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             logoImageView.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: 24),
             logoImageView.centerYAnchor.constraint(equalTo: header.centerYAnchor, constant: 45),
-            logoImageView.widthAnchor.constraint(equalToConstant: 30),
-            logoImageView.heightAnchor.constraint(equalToConstant: 30)
+            logoImageView.widthAnchor.constraint(equalToConstant: 40),
+            logoImageView.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 

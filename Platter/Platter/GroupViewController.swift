@@ -126,7 +126,7 @@ class GroupViewController: UIViewController {
     private func setupPostsCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 16
+        layout.minimumLineSpacing = 60
 
         postsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         postsCollectionView.backgroundColor = .clear

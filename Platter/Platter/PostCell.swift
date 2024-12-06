@@ -46,12 +46,12 @@ class PostCell: UICollectionViewCell {
 
         // Title Label
         titleLabel.font = .boldSystemFont(ofSize: 16)
-        titleLabel.numberOfLines = 1
+        titleLabel.numberOfLines = 0 // Allow title to wrap as well
         contentView.addSubview(titleLabel)
 
         // Message Label
         messageLabel.font = .systemFont(ofSize: 14)
-        messageLabel.numberOfLines = 0
+        messageLabel.numberOfLines = 0 // Allow multiple lines for message
         contentView.addSubview(messageLabel)
 
         // Like Button
@@ -74,33 +74,39 @@ class PostCell: UICollectionViewCell {
         commentButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
+            // Avatar Image View
             avatarImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             avatarImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             avatarImageView.widthAnchor.constraint(equalToConstant: 40),
             avatarImageView.heightAnchor.constraint(equalToConstant: 40),
 
+            // Name Label
             nameLabel.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 8),
             nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16),
 
+            // Time Label
             timeLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
             timeLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 8),
             timeLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16),
 
+            // Title Label
             titleLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 16),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
+            // Message Label
             messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
+            // Like Button
             likeButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 16),
             likeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            likeButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
 
+            // Comment Button
             commentButton.centerYAnchor.constraint(equalTo: likeButton.centerYAnchor),
-            commentButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 16)
+            commentButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 16),
         ])
     }
 

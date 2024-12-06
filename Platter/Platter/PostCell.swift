@@ -8,150 +8,107 @@
 import UIKit
 
 class PostCell: UICollectionViewCell {
+    static let reuseIdentifier = "PostCell"
 
-    // MARK: - Properties (view)
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Anonymous"
-        label.font = .systemFont(ofSize: 14, weight: .semibold)
-        label.textColor = .black
-        return label
-    } ()
-    
-    private let dateLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .semibold)
-        label.textColor = UIColor(red: 192/255, green: 192/255, blue: 192/255, alpha: 1.0)
-        return label
-    } ()
-    
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "Image")
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    } ()
-    
-    private let messageLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 3
-        label.font = .systemFont(ofSize: 14, weight: .medium)
-        label.textColor = .black
-        return label
-    } ()
-    
-    private let likeButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "heart"), for: .normal)
-        button.contentMode = .scaleAspectFit
-        button.tintColor = UIColor(red: 192/255, green: 192/255, blue: 192/255, alpha: 1.0)
-        return button
-    } ()
-    
-    private let likesLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .semibold)
-        label.textColor = .black
-        return label
-    } ()
-
-    // MARK: - Properties (data)
-
-    static let reuse: String = "PostCollectionViewCellReuse"
-    private let netID = "yg626"
-    private var id: String = ""
-    // MARK: - init
+    private let avatarImageView = UIImageView()
+    private let nameLabel = UILabel()
+    private let timeLabel = UILabel()
+    private let titleLabel = UILabel()
+    private let messageLabel = UILabel()
+    private let likeButton = UIButton()
+    private let commentButton = UIButton()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
-        backgroundColor = .white
-        layer.cornerRadius = 16
-
         setupViews()
-        likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Set Up Views
-
     private func setupViews() {
-        contentView.addSubview(imageView)
+        // Avatar
+        avatarImageView.layer.cornerRadius = 20
+        avatarImageView.clipsToBounds = true
+        avatarImageView.contentMode = .scaleAspectFill
+        avatarImageView.image = UIImage(systemName: "person.circle.fill") // Placeholder avatar
+        contentView.addSubview(avatarImageView)
+
+        // Name Label
+        nameLabel.font = .boldSystemFont(ofSize: 14)
         contentView.addSubview(nameLabel)
-        contentView.addSubview(dateLabel)
+
+        // Time Label
+        timeLabel.font = .systemFont(ofSize: 12)
+        timeLabel.textColor = .gray
+        contentView.addSubview(timeLabel)
+
+        // Title Label
+        titleLabel.font = .boldSystemFont(ofSize: 16)
+        titleLabel.numberOfLines = 1
+        contentView.addSubview(titleLabel)
+
+        // Message Label
+        messageLabel.font = .systemFont(ofSize: 14)
+        messageLabel.numberOfLines = 0
         contentView.addSubview(messageLabel)
+
+        // Like Button
+        likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        likeButton.tintColor = .gray
         contentView.addSubview(likeButton)
-        contentView.addSubview(likesLabel)
-    
-        // Layout using AutoLayout
+
+        // Comment Button
+        commentButton.setImage(UIImage(systemName: "bubble.left"), for: .normal)
+        commentButton.tintColor = .gray
+        contentView.addSubview(commentButton)
+
+        // Constraints
+        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         likeButton.translatesAutoresizingMaskIntoConstraints = false
-        likesLabel.translatesAutoresizingMaskIntoConstraints = false
+        commentButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            imageView.widthAnchor.constraint(equalToConstant: 32),
-            imageView.heightAnchor.constraint(equalToConstant: 32),
+            avatarImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            avatarImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            avatarImageView.widthAnchor.constraint(equalToConstant: 40),
+            avatarImageView.heightAnchor.constraint(equalToConstant: 40),
 
-            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
-            nameLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            nameLabel.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 8),
+            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16),
 
-            dateLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
-            dateLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8),
-            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            timeLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
+            timeLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 8),
+            timeLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16),
 
-            messageLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16),
-            messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            titleLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+
+            messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             likeButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 16),
-            likeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            likeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            likeButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
 
-            likesLabel.centerYAnchor.constraint(equalTo: likeButton.centerYAnchor),
-            likesLabel.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 8),
-            likesLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24)
+            commentButton.centerYAnchor.constraint(equalTo: likeButton.centerYAnchor),
+            commentButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 16)
         ])
     }
-    
+
     func configure(with post: Post) {
-        messageLabel.text = post.message
-        dateLabel.text = "\(post.time.convertToAgo())"
-        likesLabel.text = "\(post.likes.count) likes"
-        id = post.id
-        updateLikeButton(post: post)
-    }
-    
-    private func updateLikeButton(post: Post) {
-        if post.likes.contains(netID) {
-            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-            likeButton.tintColor = .red
-        } else {
-            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-            likeButton.tintColor = .black
-        }
-    }
-    
-    // MARK: - Handle Like Button Tap
-    @objc private func likeButtonTapped() {
-        print("Like button tapped")
-//        NetworkManager.shared.likePost(postID: id, netID: netID) { [weak self] response in
-//            guard self != nil else { return }
-//            print("Like request successful")
-//        }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.layoutIfNeeded()
-        imageView.layer.cornerRadius = imageView.frame.size.width / 2
-        imageView.clipsToBounds = true
+        avatarImageView.sd_setImage(with: URL(string: post.avatar), placeholderImage: UIImage(systemName: "person.circle"))
+        nameLabel.text = post.name
+        timeLabel.text = DateFormatter.localizedString(from: post.time, dateStyle: .none, timeStyle: .short)
+        titleLabel.text = post.title
+        messageLabel.text = post.description
     }
 }

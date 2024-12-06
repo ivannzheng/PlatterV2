@@ -14,6 +14,8 @@ class GroupViewController: UIViewController {
     private let titleLabel = UILabel()
     private var groupsCollectionView: UICollectionView!
     private let createPostButton = UIButton()
+    private var postsCollectionView: UICollectionView!
+    private var posts: [Post] = Post.dummyPosts
 
     // MARK: - Data
     private var groups: [String] = ["Ithaca Bakers", "Global Cuisine Explorers", "Bakers Unite"]
@@ -28,6 +30,7 @@ class GroupViewController: UIViewController {
         setupGroupsCollectionView()
         setupNewsFeedLabel()
         setupCreatePostButton()
+        setupPostsCollectionView()
     }
 
     // MARK: - Setup Views
@@ -119,32 +122,87 @@ class GroupViewController: UIViewController {
         let createPostVC = CreatePostVC()
         navigationController?.pushViewController(createPostVC, animated: true)
     }
+    
+    private func setupPostsCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 16
+
+        postsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        postsCollectionView.backgroundColor = .clear
+        postsCollectionView.delegate = self
+        postsCollectionView.dataSource = self
+        postsCollectionView.register(PostCell.self, forCellWithReuseIdentifier: PostCell.reuseIdentifier)
+        view.addSubview(postsCollectionView)
+        postsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            postsCollectionView.topAnchor.constraint(equalTo: createPostButton.bottomAnchor, constant: 16),
+            postsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            postsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            postsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
 }
 
 // MARK: - UICollectionViewDataSource
 extension GroupViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        if collectionView == postsCollectionView {
+            return 1 // Posts collection view only has one section
+        } else if collectionView == groupsCollectionView {
+            return 1 // Groups collection view only has one section
+        }
+        return 0
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return groups.count
+        if collectionView == groupsCollectionView {
+            return groups.count // Number of groups
+        } else if collectionView == postsCollectionView {
+            return posts.count // Number of posts
+        }
+        return 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupCell.reuseIdentifier, for: indexPath) as! GroupCell
-        cell.configure(with: groups[indexPath.item])
-        if indexPath.item == 0 {
-            cell.contentView.backgroundColor = UIColor(red: 140/255, green: 108/255, blue: 58/255, alpha: 1.0)
-            cell.titleLabel.textColor = .white
-        } else {
-            cell.contentView.backgroundColor = UIColor(red: 232/255, green: 213/255, blue: 183/255, alpha: 1.0)
+        if collectionView == groupsCollectionView {
+            // Configure GroupCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupCell.reuseIdentifier, for: indexPath) as! GroupCell
+            cell.configure(with: groups[indexPath.item])
+            if indexPath.item == 0 {
+                cell.contentView.backgroundColor = UIColor(red: 140/255, green: 108/255, blue: 58/255, alpha: 1.0)
+                cell.titleLabel.textColor = .white
+            } else {
+                cell.contentView.backgroundColor = UIColor(red: 232/255, green: 213/255, blue: 183/255, alpha: 1.0)
+                cell.titleLabel.textColor = .black
+            }
+            return cell
+        } else if collectionView == postsCollectionView {
+            // Configure PostCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostCell.reuseIdentifier, for: indexPath) as! PostCell
+            let post = posts[indexPath.item]
+            cell.configure(with: post)
+            return cell
         }
-        return cell
+        fatalError("Unexpected collection view")
     }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension GroupViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let text = groups[indexPath.item]
-        let width = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16)]).width + 32
-        return CGSize(width: width, height: 40)
+        if collectionView == groupsCollectionView {
+            // Group collection view sizing
+            let text = groups[indexPath.item]
+            let width = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16)]).width + 32
+            return CGSize(width: width, height: 40)
+        } else if collectionView == postsCollectionView {
+            // Post collection view sizing
+            let padding: CGFloat = 32 // Left and right padding
+            let width = collectionView.frame.width - padding
+            return CGSize(width: width, height: 160) // Example post size
+        }
+        return .zero
     }
 }

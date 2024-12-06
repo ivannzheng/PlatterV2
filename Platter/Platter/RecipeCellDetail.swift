@@ -36,10 +36,8 @@ class RecipeDetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
 
-
-
-        setupHeaderView() // First, set up the header view
-        setupScrollView() // Then, set up the scroll view below it
+        setupHeaderView()
+        setupScrollView()
         setupBookmark()
         setupBackButton()
         setupSummaryLabel()
@@ -49,15 +47,21 @@ class RecipeDetailViewController: UIViewController {
         populateData()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print("ScrollView Content Size: \(scrollView.contentSize)")
+        print("ContentView Frame: \(contentView.frame)")
+    }
+    
     // MARK: - Setup ScrollView
     private func setupScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
-
+        scrollView.isUserInteractionEnabled = true
+        scrollView.isScrollEnabled = true
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
 
-        // Constraints for the scroll view
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor), // Start below headerView
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -65,7 +69,6 @@ class RecipeDetailViewController: UIViewController {
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
-        // Constraints for the content view inside the scroll view
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
@@ -173,7 +176,7 @@ class RecipeDetailViewController: UIViewController {
             instructionsLabel.topAnchor.constraint(equalTo: instructionsTitleLabel.bottomAnchor, constant: 8),
             instructionsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             instructionsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            instructionsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            instructionsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
 

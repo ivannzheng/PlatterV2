@@ -13,12 +13,15 @@ class SearchVC: UIViewController {
     private let recentSearchLabel = UILabel()
     private var filtersCollectionView: UICollectionView!
     private var recentSearchesTableView: UITableView!
-
+    private var filteredRecipesCollectionView: UICollectionView!
+    
     // MARK: - Data
     private var filters: [String] = ["Vegetarian", "Meats", "Grilled", "Healthy", "Soup"]
     private var selectedFilters: [Bool] = []
     private var recentSearches: [Recipe] = Recipe.loadRecipes()
-
+    private var filteredRecipes: [Recipe] = []
+    private var selectedFiltersList: [String] = []
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +38,7 @@ class SearchVC: UIViewController {
         setupFiltersCollectionView()
         setupSearchLabel()
         setupRecentSearchesTableView()
+        setupFilteredRecipesCollectionView()
     }
 
     // MARK: - Setup Views
@@ -152,6 +156,30 @@ class SearchVC: UIViewController {
             recentSearchesTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    private func setupFilteredRecipesCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 16
+
+        filteredRecipesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        filteredRecipesCollectionView.backgroundColor = .clear
+        filteredRecipesCollectionView.showsVerticalScrollIndicator = false
+        filteredRecipesCollectionView.delegate = self
+        filteredRecipesCollectionView.dataSource = self
+        filteredRecipesCollectionView.register(RecipeCell.self, forCellWithReuseIdentifier: RecipeCell.reuseIdentifier)
+        filteredRecipesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        filteredRecipesCollectionView.isHidden = true // Start as hidden
+
+        view.addSubview(filteredRecipesCollectionView)
+
+        NSLayoutConstraint.activate([
+            filteredRecipesCollectionView.topAnchor.constraint(equalTo: filtersCollectionView.bottomAnchor, constant: 24),
+            filteredRecipesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            filteredRecipesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            filteredRecipesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -178,23 +206,49 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension SearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return filters.count
+        if collectionView == filtersCollectionView {
+            return filters.count
+        } else if collectionView == filteredRecipesCollectionView {
+            return filteredRecipes.count
+        }
+        return 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.reuseIdentifier, for: indexPath) as! FilterCell
-        let isSelected = selectedFilters[indexPath.item]
-        cell.configure(with: filters[indexPath.item], isSelected: isSelected)
-        cell.delegate = self
-        return cell
+        if collectionView == filtersCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.reuseIdentifier, for: indexPath) as! FilterCell
+            let isSelected = selectedFilters[indexPath.item]
+            cell.configure(with: filters[indexPath.item], isSelected: isSelected)
+            cell.delegate = self
+            return cell
+        } else if collectionView == filteredRecipesCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipeCell.reuseIdentifier, for: indexPath) as! RecipeCell
+            let recipe = filteredRecipes[indexPath.item]
+            cell.configure(with: recipe, isBookmarked: recipe.saved)
+            return cell
+        }
+        return UICollectionViewCell()
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let text = filters[indexPath.item]
-        // Calculate the text width with padding
-        let textWidth = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16, weight: .semibold)]).width
-        let cellWidth = textWidth + 16 // Add padding (16px left + 16px right)
-        return CGSize(width: cellWidth, height: 32) // Height stays fixed
+        if collectionView == filtersCollectionView {
+            let text = filters[indexPath.item]
+            let textWidth = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16, weight: .semibold)]).width
+            return CGSize(width: textWidth + 16, height: 32)
+        } else if collectionView == filteredRecipesCollectionView {
+            let width = (collectionView.frame.width - 32) / 2 // Two columns
+            return CGSize(width: width, height: width + 50) // Adjust height for title
+        }
+        return CGSize.zero
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == filteredRecipesCollectionView {
+            let selectedRecipe = filteredRecipes[indexPath.item]
+            let detailVC = RecipeDetailViewController()
+            detailVC.recipe = selectedRecipe
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
     }
 }
 
@@ -203,6 +257,21 @@ extension SearchVC: FilterCellDelegate {
     func didTapFilterButton(title: String) {
         if let index = filters.firstIndex(of: title) {
             selectedFilters[index].toggle()
+
+            // Update filtered recipes based on selected type
+            if selectedFilters[index] {
+                filteredRecipes = recentSearches.filter { $0.type == title }
+                recentSearchesTableView.isHidden = true
+                recentSearchLabel.isHidden = true
+                filteredRecipesCollectionView.isHidden = false
+                filteredRecipesCollectionView.reloadData()
+            } else {
+                // Show recent searches if no filters are selected
+                filteredRecipesCollectionView.isHidden = true
+                recentSearchesTableView.isHidden = false
+                recentSearchLabel.isHidden = false
+            }
+
             filtersCollectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
         }
     }

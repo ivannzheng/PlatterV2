@@ -47,7 +47,7 @@ extension Recipe {
                     "Season with fish sauce or soy sauce to taste.",
                     "Serve hot over steamed rice or with flatbread."
                 ],
-                type: "Baking",
+                type: "Meats",
                 saved: false
             ),
             Recipe(
@@ -66,7 +66,7 @@ extension Recipe {
                     "Bake in the preheated oven for 20-25 minutes, or until bubbly and golden brown on top.",
                     "Let it cool for a few minutes before serving. Enjoy your creamy, cheesy Mac and Cheese!"
                 ],
-                type: "Baking",
+                type: "Vegetarian",
                 saved: false
             ),
             Recipe(
@@ -86,7 +86,7 @@ extension Recipe {
                     "Once the ham is cooked, remove it from the oven and let it rest for 15–20 minutes before slicing."
                     
                 ],
-                type: "Vegan",
+                type: "Healthy",
                 saved: false
             ),
             Recipe(
@@ -118,7 +118,7 @@ extension Recipe {
                     "Place in a roasting pan and drizzle with olive oil.",
                     "Roast for 1 hour, basting with white wine."
                 ],
-                type: "Baking",
+                type: "None",
                 saved: false
             ),
             Recipe(
@@ -133,7 +133,7 @@ extension Recipe {
                     "Top with marinara sauce and mozzarella cheese.",
                     "Bake for another 10 minutes or until cheese is melted."
                 ],
-                type: "Grilled",
+                type: "None",
                 saved: false
             ),
             Recipe(
@@ -150,7 +150,7 @@ extension Recipe {
                     "Pour in water or broth, cover, and cook on low heat until rice is tender and fully cooked.",
                     "Stir gently, adjust seasoning, and serve warm."
                 ],
-                type: "Baking",
+                type: "Grilled",
                 saved: false
             ),
             Recipe(
@@ -167,7 +167,7 @@ extension Recipe {
                     "Spread the sweet potatoes evenly on a baking sheet and roast for 25-30 minutes, flipping halfway through.",
                     "Serve warm and drizzle with honey or sprinkle with brown sugar for a touch of sweetness if desired."
                 ],
-                type: "Baking",
+                type: "Grilled",
                 saved: false
             ),
             Recipe(
@@ -182,7 +182,7 @@ extension Recipe {
                     "Simmer until the mixture is tender.",
                     "Serve with tortillas or over rice, topped with sour cream and cheese."
                 ],
-                type: "Baking",
+                type: "Soup",
                 saved: false
             ),
         ]

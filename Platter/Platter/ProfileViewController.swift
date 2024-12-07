@@ -1,4 +1,3 @@
-//
 //  ProfileViewController.swift
 //  Platter
 //
@@ -226,7 +225,7 @@ class ProfileViewController: UIViewController {
 
     private func setupSavedRecipesCollectionView() {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 0
+        layout.minimumLineSpacing = 24
         layout.minimumInteritemSpacing = 0
         savedRecipesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         savedRecipesCollectionView.backgroundColor = .clear
@@ -242,7 +241,7 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             savedRecipesCollectionView.topAnchor.constraint(equalTo: savedRecipesLabel.bottomAnchor, constant: 16),
             savedRecipesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            savedRecipesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            savedRecipesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             savedRecipesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }

@@ -148,7 +148,7 @@ class ViewController: UIViewController {
     }
     
     private func setupGroupsLabel() {
-        groupLabel.text = "Explore Groups"
+        groupLabel.text = "Explore More"
         groupLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         groupLabel.textColor = .black
         view.addSubview(groupLabel)

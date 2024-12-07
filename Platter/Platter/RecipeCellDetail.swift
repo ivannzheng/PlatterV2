@@ -243,7 +243,7 @@ class RecipeDetailViewController: UIViewController {
         isBookmarked = savedBookmarks.contains(recipe.id)
         updateBookmarkButton()
         
-        for _ in 0..<3 {
+        for _ in 0..<1 {
             let imageView = UIImageView()
             imageView.sd_setImage(with: URL(string: recipe.imageUrl), placeholderImage: UIImage(named: "placeholder"))
             imageView.contentMode = .scaleAspectFill

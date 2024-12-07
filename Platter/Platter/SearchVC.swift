@@ -118,7 +118,7 @@ class SearchVC: UIViewController {
     
     private func setupSearchLabel() {
         recentSearchLabel.text = "Recent searches"
-        recentSearchLabel.font = .systemFont(ofSize: 16, weight: .semibold)
+        recentSearchLabel.font = UIFont.avenirNext("DemiBold", size: 16)
         recentSearchLabel.textColor = .black
         recentSearchLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(recentSearchLabel)

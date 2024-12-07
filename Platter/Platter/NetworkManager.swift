@@ -15,7 +15,7 @@ class NetworkManager {
     private init() {}
 
     func fetchRecipes(completion: @escaping ([Recipe]) -> Void) {
-        let url = "https://api.jsonbin.io/v3/b/64d033f18e4aa6225ecbcf9f?meta=false"
+        let url = "placeholder"
         decoder.dateDecodingStrategy = .iso8601
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         
@@ -38,7 +38,7 @@ class NetworkManager {
         decoder.dateDecodingStrategy = .iso8601
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         
-        let endPoint = "https://chatdev-wuzwgwv35a-ue.a.run.app/api/posts/create/"
+        let endPoint = "placeholder"
         AF.request(endPoint, method: .get)
             .validate()
             .responseDecodable(of: [Post].self, decoder: decoder) { response in
@@ -54,14 +54,14 @@ class NetworkManager {
     
     func addToPosts (post: Post, completion: @escaping ((Post) -> Void)) {
         let parameters: Parameters = [
-            "id": post.id,
-            "time": post.time,
-            "name": post.name,
-            "avatar": post.avatar,
-            "title": post.title,
-            "description": post.description,
+            "id": "placeholder",
+            "time": "placeholder",
+            "name": "placeholder",
+            "avatar": "placeholder",
+            "title": "placeholder",
+            "description": "placeholder",
         ]
-        let endPoint = "https://chatdev-wuzwgwv35a-ue.a.run.app/api/posts/create/"
+        let endPoint = "placeholder"
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         

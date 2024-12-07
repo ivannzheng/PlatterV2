@@ -108,7 +108,7 @@ extension Recipe {
                     "Place in a roasting pan and drizzle with olive oil.",
                     "Roast for 1 hour, basting with white wine."
                 ],
-                type: "None",
+                type: "Meats",
                 saved: false
             ),
             Recipe(
@@ -123,7 +123,7 @@ extension Recipe {
                     "Top with marinara sauce and mozzarella cheese.",
                     "Bake for another 10 minutes or until cheese is melted."
                 ],
-                type: "None",
+                type: "Grilled",
                 saved: false
             ),
             Recipe(
@@ -138,7 +138,7 @@ extension Recipe {
                     "Add washed rice to the pot and mix to coat with the sauce.",
                     "Pour in water or broth, cover, and cook on low heat until rice is tender.",
                 ],
-                type: "Grilled",
+                type: "Vegetarian",
                 saved: false
             ),
             Recipe(
@@ -153,7 +153,7 @@ extension Recipe {
                     "Add optional seasonings like cinnamon or paprika for flavor.",
                     "Spread the sweet potatoes evenly on a baking sheet and roast for 25-30 minutes, flipping halfway through."
                 ],
-                type: "Grilled",
+                type: "Vegetarian",
                 saved: false
             ),
             Recipe(
@@ -168,7 +168,7 @@ extension Recipe {
                     "Simmer until the mixture is tender.",
                     "Serve with tortillas or over rice, topped with sour cream and cheese."
                 ],
-                type: "Soup",
+                type: "Meats",
                 saved: false
             ),
         ]

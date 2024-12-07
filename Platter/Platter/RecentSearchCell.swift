@@ -29,7 +29,7 @@ class RecentSearchCell: UITableViewCell {
         thumbnailImageView.contentMode = .scaleAspectFill
         thumbnailImageView.translatesAutoresizingMaskIntoConstraints = false
 
-        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.font = UIFont.avenirNext("Medium", size: 16)
         titleLabel.numberOfLines = 1
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 

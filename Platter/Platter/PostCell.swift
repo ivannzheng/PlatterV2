@@ -29,18 +29,17 @@ class PostCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        avatarImageView.layer.cornerRadius = avatarImageView.frame.width / 2
-    }
-    
     private func setupViews() {
         contentView.layer.cornerRadius = 16
         contentView.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.0)
         
+        // Set up avatarImageView as a circle right from the start
         avatarImageView.clipsToBounds = true
         avatarImageView.contentMode = .scaleAspectFill
         avatarImageView.image = UIImage(systemName: "person.circle.fill")
+        
+        // Set the corner radius to half of the width (to make it circular)
+        avatarImageView.layer.cornerRadius = 50 / 2
         contentView.addSubview(avatarImageView)
 
         nameLabel.font = UIFont.avenirNext("Medium", size: 16)

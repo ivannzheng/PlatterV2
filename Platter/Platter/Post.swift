@@ -34,7 +34,7 @@ extension Post {
             name: "Ivan Zheng",
             avatar: "https://drive.google.com/uc?id=1udP6e8-Jo6vuF9T2DvntLy52jfplulNH",
             title: "Sourdough Struggles?",
-            description: "I’ve been experimenting with making sourdough bread lately, and while it’s super rewarding, I’ve hit a few snags. My starter seems happy, but my loaves keep coming out dense instead of fluffy and airy. Anyone have tips for getting that perfect crumb?",
+            description: "I’ve been experimenting with making sourdough bread lately, but my loaves keep coming out dense instead of fluffy and airy. Anyone have tips?",
             time: Date().addingTimeInterval(-10800)
         ),
         Post(

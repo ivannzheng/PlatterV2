@@ -83,7 +83,7 @@ class ViewController: UIViewController {
 
     private func setupTitle() {
         titleLabel.text = "Platter"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        titleLabel.font = UIFont.avenirNext("DemiBold", size: 24)
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         

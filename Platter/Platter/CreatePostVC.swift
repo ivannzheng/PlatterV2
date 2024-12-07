@@ -73,7 +73,7 @@ class CreatePostVC: UIViewController {
     
     private func setupTitle() {
         titleLabel.text = "Groups"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        titleLabel.font = UIFont.avenirNext("DemiBold", size: 24)
         titleLabel.textColor = .black
         view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -109,7 +109,7 @@ class CreatePostVC: UIViewController {
     
     private func setupCreatePostLabel() {
         createPostLabel.text = "Create Post"
-        createPostLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        createPostLabel.font = UIFont.avenirNext("Medium", size: 16)
         createPostLabel.textColor = .black
         view.addSubview(createPostLabel)
         createPostLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -123,14 +123,14 @@ class CreatePostVC: UIViewController {
     private func setupPostTitleField() {
         let postTitleLabel = UILabel()
         postTitleLabel.text = "Title"
-        postTitleLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        postTitleLabel.font = UIFont.avenirNext("DemiBold", size: 16)
         postTitleLabel.textColor = .black
         view.addSubview(postTitleLabel)
         postTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         postTitleField.placeholder = "Title..."
         postTitleField.borderStyle = .roundedRect
-        postTitleField.font = UIFont.systemFont(ofSize: 16)
+        postTitleField.font = UIFont.avenirNext("Medium", size: 16)
         postTitleField.layer.borderWidth = 1
         postTitleField.layer.borderColor = .none
         
@@ -150,7 +150,7 @@ class CreatePostVC: UIViewController {
 
     private func setupCaptionField() {
         captionTextView.text = "Write a caption..."
-        captionTextView.font = UIFont.systemFont(ofSize: 16)
+        captionTextView.font = UIFont.avenirNext("Medium", size: 16)
         captionTextView.textColor = .lightGray
         captionTextView.layer.cornerRadius = 15
         captionTextView.layer.borderWidth = 1

@@ -89,7 +89,7 @@ class EditProfileVC: UIViewController {
     
     private func setupNameLabel() {
         nameLabel.text = name
-        nameLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        nameLabel.font = UIFont.avenirNext("DemiBold", size: 24)
         nameLabel.textColor = .black
 
         view.addSubview(nameLabel)
@@ -103,7 +103,7 @@ class EditProfileVC: UIViewController {
     
     private func setupUsernameLabel() {
         usernameLabel.text = username
-        usernameLabel.font = UIFont.italicSystemFont(ofSize: 14)
+        usernameLabel.font = UIFont.avenirNext("Italic", size: 16)
         usernameLabel.textColor = .black
         usernameLabel.numberOfLines = 0
 
@@ -121,7 +121,7 @@ class EditProfileVC: UIViewController {
         nameTextField.placeholder = "New Name"
         nameTextField.borderStyle = .roundedRect
         nameTextField.textColor = .black
-        nameTextField.font = UIFont.systemFont(ofSize: 14)
+        nameTextField.font = UIFont.avenirNext("Medium", size: 16)
         nameTextField.layer.cornerRadius = 8
         nameTextField.layer.borderWidth = 1
         nameTextField.layer.borderColor = .none
@@ -147,7 +147,7 @@ class EditProfileVC: UIViewController {
         usernameTextField.placeholder = "New Username"
         usernameTextField.borderStyle = .roundedRect
         usernameTextField.textColor = .black
-        usernameTextField.font = UIFont.systemFont(ofSize: 14)
+        usernameTextField.font = UIFont.avenirNext("Medium", size: 16)
         usernameTextField.layer.cornerRadius = 8
         usernameTextField.layer.borderWidth = 1
         usernameTextField.layer.borderColor = .none

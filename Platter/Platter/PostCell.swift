@@ -43,18 +43,18 @@ class PostCell: UICollectionViewCell {
         avatarImageView.image = UIImage(systemName: "person.circle.fill")
         contentView.addSubview(avatarImageView)
 
-        nameLabel.font = .boldSystemFont(ofSize: 14)
+        nameLabel.font = UIFont.avenirNext("Medium", size: 16)
         contentView.addSubview(nameLabel)
 
         timeLabel.font = .systemFont(ofSize: 12)
         timeLabel.textColor = .gray
         contentView.addSubview(timeLabel)
 
-        titleLabel.font = .boldSystemFont(ofSize: 16)
+        titleLabel.font = UIFont.avenirNext("DemiBold", size: 16)
         titleLabel.numberOfLines = 0
         contentView.addSubview(titleLabel)
 
-        messageLabel.font = .systemFont(ofSize: 14)
+        messageLabel.font = UIFont.avenirNext("Medium", size: 16)
         messageLabel.numberOfLines = 0
         contentView.addSubview(messageLabel)
 
@@ -105,7 +105,7 @@ class PostCell: UICollectionViewCell {
 
             commentButton.centerYAnchor.constraint(equalTo: likeButton.centerYAnchor),
             commentButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 8),
-            commentButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+            commentButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4)
         ])
     }
 

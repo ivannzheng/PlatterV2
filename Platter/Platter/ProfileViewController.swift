@@ -106,7 +106,7 @@ class ProfileViewController: UIViewController {
     private func setupNameLabel() {
         nameLabel.text = "Angela Wang"
         nameLabel.textAlignment = .center
-        nameLabel.font = UIFont.systemFont(ofSize: 32, weight: .semibold)
+        nameLabel.font = UIFont.avenirNext("DemiBold", size: 32)
         nameLabel.textColor = .black
         
         view.addSubview(nameLabel)
@@ -121,7 +121,7 @@ class ProfileViewController: UIViewController {
     
     private func setupUsernameLabel() {
         usernameLabel.text = "angelawang"
-        usernameLabel.font = UIFont.italicSystemFont(ofSize: 16)
+        usernameLabel.font = UIFont.avenirNext("Italic", size: 16)
         
         usernameLabel.textAlignment = .center
         usernameLabel.textColor = .black
@@ -159,7 +159,7 @@ class ProfileViewController: UIViewController {
     
     private func setupInterestsLabel() {
         interestsLabel.text = "Interests"
-        interestsLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        interestsLabel.font = UIFont.avenirNext("DemiBold", size: 16)
         interestsLabel.textColor = .black
 
         view.addSubview(interestsLabel)
@@ -212,7 +212,7 @@ class ProfileViewController: UIViewController {
     
     private func setupSavedRecipesLabel() {
         savedRecipesLabel.text = "Saved Recipes"
-        savedRecipesLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        savedRecipesLabel.font = UIFont.avenirNext("DemiBold", size: 16)
         savedRecipesLabel.textColor = .black
         view.addSubview(savedRecipesLabel)
         savedRecipesLabel.translatesAutoresizingMaskIntoConstraints = false

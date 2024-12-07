@@ -66,7 +66,7 @@ class GroupViewController: UIViewController {
     
     private func setupTitle() {
         titleLabel.text = "Groups"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        titleLabel.font = UIFont.avenirNext("DemiBold", size: 24)
         titleLabel.textColor = .black
         view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -103,7 +103,7 @@ class GroupViewController: UIViewController {
 
     private func setupNewsFeedLabel() {
         newsFeedLabel.text = "News Feed"
-        newsFeedLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        newsFeedLabel.font = UIFont.avenirNext("DemiBold", size: 16)
         newsFeedLabel.textColor = .black
         view.addSubview(newsFeedLabel)
         newsFeedLabel.translatesAutoresizingMaskIntoConstraints = false

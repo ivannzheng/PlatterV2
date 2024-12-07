@@ -17,7 +17,7 @@ class InterestCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 15
         contentView.clipsToBounds = true
 
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.avenirNext("Medium", size: 16)
         label.textColor = .black
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false

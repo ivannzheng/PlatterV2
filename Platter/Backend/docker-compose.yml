@@ -1,10 +1,5 @@
-
 services:
   platter: 
-    build:
-      context: .
-      dockerfile: Dockerfile 
+    image: ivannzheng/platter 
     ports:
       - "8000:8000"
-    image: ivannzheng/platter
-    platform: linux/amd64

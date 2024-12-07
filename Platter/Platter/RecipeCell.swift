@@ -76,7 +76,7 @@ class RecipeCell: UICollectionViewCell {
         bookmarkButton.tintColor = .white
         bookmarkButton.addTarget(self, action: #selector(bookmarkTapped), for: .touchUpInside)
         bookmarkButton.isUserInteractionEnabled = true
-        imageView.addSubview(bookmarkButton) // Adding bookmarkButton directly to imageView
+        imageView.addSubview(bookmarkButton)
         
         bookmarkButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -88,7 +88,7 @@ class RecipeCell: UICollectionViewCell {
     }
     
     @objc private func bookmarkTapped() {
-        delegate?.didTapBookmark(for: self) // Notify the delegate
+        delegate?.didTapBookmark(for: self) 
     }
 }
 

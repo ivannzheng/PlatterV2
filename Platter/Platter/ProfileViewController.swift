@@ -176,7 +176,6 @@ class ProfileViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 8
-        layout.minimumInteritemSpacing = 16
 
         // Create a container view for the collection view
         let collectionContainer = UIView()
@@ -227,10 +226,8 @@ class ProfileViewController: UIViewController {
 
     private func setupSavedRecipesCollectionView() {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 16
-        layout.minimumInteritemSpacing = 16
-        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 48) / 2, height: 160)
-
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
         savedRecipesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         savedRecipesCollectionView.backgroundColor = .clear
         savedRecipesCollectionView.delegate = self
@@ -245,7 +242,7 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             savedRecipesCollectionView.topAnchor.constraint(equalTo: savedRecipesLabel.bottomAnchor, constant: 16),
             savedRecipesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            savedRecipesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            savedRecipesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             savedRecipesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
@@ -331,12 +328,8 @@ extension ProfileViewController: UICollectionViewDelegate {
 extension ProfileViewController: RecipeCellDelegate {
     func didTapBookmark(for cell: RecipeCell) {
         guard let indexPath = savedRecipesCollectionView.indexPath(for: cell) else { return }
-        
-        // Update the saved state of the recipe
         var recipe = savedRecipes[indexPath.item]
         recipe.saved.toggle()
-        
-        // Update the saved recipes array and save to UserDefaults
         if recipe.saved {
             savedRecipes.append(recipe)
         } else {
@@ -356,16 +349,14 @@ extension ProfileViewController: RecipeCellDelegate {
 extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == interestsCollectionView {
-            // Apply the size logic for the interests collection view
             let text = interests[indexPath.item]
             let width = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16)]).width + 24
             return CGSize(width: width, height: 36)
         } else if collectionView == savedRecipesCollectionView {
-            // Apply the size logic for the saved recipes collection view
             let width = (UIScreen.main.bounds.width - 48) / 2
             return CGSize(width: width, height: 160)
         } else {
-            return CGSize(width: 100, height: 100) // Default size for any other collection view
+            return CGSize(width: 100, height: 100)
         }
     }
 }

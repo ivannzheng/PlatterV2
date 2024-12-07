@@ -81,6 +81,7 @@ class GroupViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 8
+        layout.minimumInteritemSpacing = 8
         
         groupsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         groupsCollectionView.backgroundColor = .clear
@@ -143,7 +144,7 @@ class GroupViewController: UIViewController {
     private func setupPostsCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 60
+        layout.minimumLineSpacing = 16
 
         postsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         postsCollectionView.backgroundColor = .clear
@@ -154,9 +155,9 @@ class GroupViewController: UIViewController {
         postsCollectionView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            postsCollectionView.topAnchor.constraint(equalTo: createPostButton.bottomAnchor, constant: 16),
-            postsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            postsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            postsCollectionView.topAnchor.constraint(equalTo: createPostButton.bottomAnchor, constant: 24),
+            postsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            postsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             postsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
@@ -166,25 +167,24 @@ class GroupViewController: UIViewController {
 extension GroupViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         if collectionView == postsCollectionView {
-            return 1 // Posts collection view only has one section
+            return 1 
         } else if collectionView == groupsCollectionView {
-            return 1 // Groups collection view only has one section
+            return 1
         }
         return 0
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == groupsCollectionView {
-            return groups.count // Number of groups
+            return groups.count
         } else if collectionView == postsCollectionView {
-            return posts.count // Number of posts
+            return posts.count
         }
         return 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == groupsCollectionView {
-            // Configure GroupCell
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupCell.reuseIdentifier, for: indexPath) as! GroupCell
             cell.configure(with: groups[indexPath.item])
             if indexPath.item == 0 {
@@ -196,7 +196,6 @@ extension GroupViewController: UICollectionViewDataSource {
             }
             return cell
         } else if collectionView == postsCollectionView {
-            // Configure PostCell
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostCell.reuseIdentifier, for: indexPath) as! PostCell
             let post = posts[indexPath.item]
             cell.configure(with: post)
@@ -210,15 +209,12 @@ extension GroupViewController: UICollectionViewDataSource {
 extension GroupViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == groupsCollectionView {
-            // Group collection view sizing
             let text = groups[indexPath.item]
             let width = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16)]).width + 32
             return CGSize(width: width, height: 40)
         } else if collectionView == postsCollectionView {
-            // Post collection view sizing
-            let padding: CGFloat = 32 // Left and right padding
-            let width = collectionView.frame.width - padding
-            return CGSize(width: width, height: 160) // Example post size
+            let width = collectionView.frame.width
+            return CGSize(width: width, height: 240)
         }
         return .zero
     }

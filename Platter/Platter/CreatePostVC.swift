@@ -149,18 +149,16 @@ class CreatePostVC: UIViewController {
     }
 
     private func setupCaptionField() {
-        // Configure the UITextView
-        captionTextView.text = "Write a caption..." // Placeholder text
+        captionTextView.text = "Write a caption..."
         captionTextView.font = UIFont.systemFont(ofSize: 16)
-        captionTextView.textColor = .lightGray // Placeholder color
+        captionTextView.textColor = .lightGray
         captionTextView.layer.cornerRadius = 15
         captionTextView.layer.borderWidth = 1
         captionTextView.layer.borderColor = UIColor.black.cgColor
 
         captionTextView.isScrollEnabled = true
-        captionTextView.delegate = self // Add delegate to handle placeholder logic
+        captionTextView.delegate = self
         
-        // Add to the view
         view.addSubview(captionTextView)
         captionTextView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -168,7 +166,7 @@ class CreatePostVC: UIViewController {
             captionTextView.topAnchor.constraint(equalTo: postTitleField.bottomAnchor, constant: 24),
             captionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             captionTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            captionTextView.heightAnchor.constraint(equalToConstant: 176) // Adjust height as needed
+            captionTextView.heightAnchor.constraint(equalToConstant: 176)
         ])
     }
     
@@ -192,7 +190,6 @@ class CreatePostVC: UIViewController {
     
     @objc private func postButtonTapped() {
         print("Post button tapped")
-        // Handle the post logic here
     }
 }
 
@@ -227,15 +224,15 @@ extension CreatePostVC: UICollectionViewDelegateFlowLayout {
 extension CreatePostVC: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView == captionTextView && textView.text == "Write a caption..." {
-            textView.text = "" // Remove placeholder
-            textView.textColor = .black // Change text color to normal
+            textView.text = ""
+            textView.textColor = .black
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView == captionTextView && textView.text.isEmpty {
-            textView.text = "Write a caption..." // Set placeholder back
-            textView.textColor = .lightGray // Change text color to placeholder
+            textView.text = "Write a caption..."
+            textView.textColor = .lightGray 
         }
     }
 }

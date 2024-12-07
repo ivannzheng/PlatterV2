@@ -232,13 +232,11 @@ class EditProfileVC: UIViewController {
     // MARK: - Button Helpers
     
     @objc private func saveChanges() {
-        let name = nameTextField.text ?? name // Use the current value if text is empty
-        let username = usernameTextField.text ?? username // Use the current value if text is empty
+        let name = nameTextField.text ?? name
+        let username = usernameTextField.text ?? username
         
-        // Pass updated values to delegate
         profileDelegate?.didUpdateProfile(name: name, username: username)
         
-        // Save directly to UserDefaults in case delegate isn't called immediately
         UserDefaults.standard.set(name, forKey: "name")
         UserDefaults.standard.set(username, forKey: "username")
         

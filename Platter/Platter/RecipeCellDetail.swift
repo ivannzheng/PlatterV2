@@ -47,12 +47,6 @@ class RecipeDetailViewController: UIViewController {
         populateData()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        print("ScrollView Content Size: \(scrollView.contentSize)")
-        print("ContentView Frame: \(contentView.frame)")
-    }
-    
     // MARK: - Setup ScrollView
     private func setupScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -63,7 +57,7 @@ class RecipeDetailViewController: UIViewController {
         scrollView.addSubview(contentView)
 
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor), // Start below headerView
+            scrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -74,7 +68,7 @@ class RecipeDetailViewController: UIViewController {
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor) // Important for dynamic sizing
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
     }
     
@@ -188,7 +182,6 @@ class RecipeDetailViewController: UIViewController {
         let bookmarkImageName = isBookmarked ? "bookmark.fill" : "bookmark"
         bookmarkButton.setImage(UIImage(systemName: bookmarkImageName), for: .normal)
 
-        // Save bookmark in UserDefaults
         guard var recipe = recipe else { return }
         var savedBookmarks = UserDefaults.standard.array(forKey: "bookmarkedRecipes") as? [String] ?? []
         if isBookmarked {
@@ -203,7 +196,6 @@ class RecipeDetailViewController: UIViewController {
             savedRecipes[index] = recipe
             Recipe.saveRecipes(savedRecipes)
         }
-        // Notify other views about the bookmark change
         NotificationCenter.default.post(name: NSNotification.Name("BookmarkUpdated"), object: nil)
     }
 
@@ -247,12 +239,10 @@ class RecipeDetailViewController: UIViewController {
         titleLabel.text = recipe.title
         summaryLabel.text = recipe.summary
         
-        // Check bookmark status
         let savedBookmarks = UserDefaults.standard.array(forKey: "bookmarkedRecipes") as? [String] ?? []
         isBookmarked = savedBookmarks.contains(recipe.id)
         updateBookmarkButton()
         
-        // Load sample images in the stack view
         for _ in 0..<3 {
             let imageView = UIImageView()
             imageView.sd_setImage(with: URL(string: recipe.imageUrl), placeholderImage: UIImage(named: "placeholder"))

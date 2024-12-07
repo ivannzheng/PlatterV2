@@ -50,8 +50,8 @@ class FilterCell: UICollectionViewCell {
         filterButton.setTitle(title, for: .normal)
         filterButton.setTitleColor(isSelected ? .white : .black, for: .normal)
         filterButton.backgroundColor = isSelected
-            ? UIColor(red: 140/255, green: 108/255, blue: 58/255, alpha: 1.0) // Selected color
-            : UIColor(red: 232/255, green: 213/255, blue: 183/255, alpha: 1.0) // Default color
+            ? UIColor(red: 140/255, green: 108/255, blue: 58/255, alpha: 1.0)
+            : UIColor(red: 232/255, green: 213/255, blue: 183/255, alpha: 1.0) 
     }
 
     required init?(coder: NSCoder) {

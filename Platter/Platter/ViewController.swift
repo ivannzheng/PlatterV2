@@ -48,8 +48,8 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: false) // Ensure navigation bar is shown
-        setupSearchButton() // Re-add the search button
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        setupSearchButton()
     }
 
     // MARK: - Set Up Views
@@ -117,8 +117,8 @@ class ViewController: UIViewController {
     }
     
     @objc private func searchButtonTapped() {
-        let searchVC = SearchVC() // Instantiate the SearchVC
-        navigationController?.pushViewController(searchVC, animated: true) // Push to the navigation stack
+        let searchVC = SearchVC()
+        navigationController?.pushViewController(searchVC, animated: true)
     }
     
     private func setupRecommendLabel() {
@@ -249,7 +249,6 @@ extension ViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        // Filter recipes based on the collectionView
         let filteredRecipes: [Recipe]
         if collectionView == collectionView1 {
             filteredRecipes = recipes.filter { $0.id == "1" || $0.id == "2" || $0.id == "7"}
@@ -259,16 +258,13 @@ extension ViewController: UICollectionViewDataSource {
             filteredRecipes = recipes.filter { $0.id == "5" || $0.id == "6" || $0.id == "9"}
         }
         
-        // Get the recipe for the current cell
         let recipe = filteredRecipes[indexPath.item]
         
-        // Check if the recipe is bookmarked
         let savedBookmarks = UserDefaults.standard.array(forKey: "bookmarkedRecipes") as? [String] ?? []
         let isBookmarked = savedBookmarks.contains(recipe.id)
-        
-        // Configure the cell
+    
         cell.configure(with: recipe, isBookmarked: isBookmarked)
-        cell.delegate = self // Assign the delegate
+        cell.delegate = self
         return cell
     }
 }
@@ -278,7 +274,6 @@ extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let filteredRecipes: [Recipe]
         
-        // Determine which collection view and recipes to use
         if collectionView == collectionView1 {
             filteredRecipes = recipes.filter { $0.id == "1" || $0.id == "2" || $0.id == "7"}
         } else if collectionView == collectionView2 {
@@ -287,14 +282,9 @@ extension ViewController: UICollectionViewDelegate {
             filteredRecipes = recipes.filter { $0.id == "5" || $0.id == "6" || $0.id == "9"}
         }
         
-        // Get the selected recipe
         let recipe = filteredRecipes[indexPath.item]
-        
-        // Instantiate RecipeDetailViewController
         let detailVC = RecipeDetailViewController()
         detailVC.recipe = recipe
-        
-        // Push the detail view controller onto the navigation stack
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
@@ -302,20 +292,15 @@ extension ViewController: UICollectionViewDelegate {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension ViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        // Return uniform cell size for all collection views
-        return CGSize(width: 160, height: 160) // Customize size as needed
+        return CGSize(width: 160, height: 160)
     }
 }
 
 extension ViewController: RecipeCellDelegate {
     func didTapBookmark(for cell: RecipeCell) {
-        guard let indexPath = collectionView1.indexPath(for: cell) else { return } // Adjust this for the correct collection view
-        var recipe = recipes[indexPath.item] // Get the corresponding recipe
-        
-        // Retrieve the current bookmarks
+        guard let indexPath = collectionView1.indexPath(for: cell) else { return }
+        var recipe = recipes[indexPath.item]
         var savedBookmarks = UserDefaults.standard.array(forKey: "bookmarkedRecipes") as? [String] ?? []
-        
-        // Add or remove the bookmark
         if savedBookmarks.contains(recipe.id) {
             savedBookmarks.removeAll { $0 == recipe.id }
         } else {
@@ -323,15 +308,9 @@ extension ViewController: RecipeCellDelegate {
         }
         
         recipe.saved.toggle()
-        recipes[indexPath.item] = recipe // Update the recipe in the array
-
-        // Save the updated recipes to UserDefaults
+        recipes[indexPath.item] = recipe
         Recipe.saveRecipes(recipes)
-        
-        // Save the updated bookmarks
         UserDefaults.standard.set(savedBookmarks, forKey: "bookmarkedRecipes")
-        
-        // Reload the specific cell to update the bookmark state
         collectionView1.reloadItems(at: [indexPath])
     }
 }

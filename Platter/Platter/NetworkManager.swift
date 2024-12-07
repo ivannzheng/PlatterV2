@@ -36,7 +36,6 @@ class NetworkManager {
     func fetchPosts(completion: @escaping ([Post]) -> Void) {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        // convert keys to camel case
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         
         let endPoint = "https://chatdev-wuzwgwv35a-ue.a.run.app/api/posts/create/"

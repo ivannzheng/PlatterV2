@@ -27,14 +27,12 @@ class SearchVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
 
-        // Initialize the selectedFilters array
         selectedFilters = Array(repeating: false, count: filters.count)
 
-        // Remove the default back button
         navigationItem.hidesBackButton = true
 
         setupHeader()
-        setupBackButtonAndSearchBar() // Combined back button and search bar
+        setupBackButtonAndSearchBar()
         setupFiltersCollectionView()
         setupSearchLabel()
         setupRecentSearchesTableView()
@@ -56,16 +54,13 @@ class SearchVC: UIViewController {
     }
 
     private func setupBackButtonAndSearchBar() {
-        // Back Button
         backButton.setImage(UIImage(named: "arrow"), for: .normal)
         backButton.tintColor = .black
         backButton.addTarget(self, action: #selector(popVC), for: .touchUpInside)
 
-        // Set backButton as the leftBarButtonItem
         let backButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backButtonItem
 
-        // Search Bar
         searchTextField.placeholder = "Search"
         searchTextField.backgroundColor = UIColor(red: 232 / 255, green: 213 / 255, blue: 183 / 255, alpha: 1.0)
         searchTextField.layer.cornerRadius = 16
@@ -75,7 +70,6 @@ class SearchVC: UIViewController {
         searchTextField.tintColor = .black
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
 
-        // Create a container for the search bar to add it as the titleView
         let searchContainer = UIView()
         searchContainer.translatesAutoresizingMaskIntoConstraints = false
         searchContainer.addSubview(searchTextField)
@@ -88,16 +82,13 @@ class SearchVC: UIViewController {
             searchTextField.heightAnchor.constraint(equalToConstant: 40)
         ])
 
-        // Set the container view as the navigation item's titleView
         navigationItem.titleView = searchContainer
 
-        // Adjust the searchContainer size
-        searchContainer.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 56).isActive = true // Adjust width
+        searchContainer.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 56).isActive = true
         searchContainer.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
 
     @objc private func popVC() {
-        // Navigate back to the previous view controller
         navigationController?.popViewController(animated: true)
     }
 
@@ -169,7 +160,7 @@ class SearchVC: UIViewController {
         filteredRecipesCollectionView.dataSource = self
         filteredRecipesCollectionView.register(RecipeCell.self, forCellWithReuseIdentifier: RecipeCell.reuseIdentifier)
         filteredRecipesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        filteredRecipesCollectionView.isHidden = true // Start as hidden
+        filteredRecipesCollectionView.isHidden = true
 
         view.addSubview(filteredRecipesCollectionView)
 
@@ -236,8 +227,8 @@ extension SearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayo
             let textWidth = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16, weight: .semibold)]).width
             return CGSize(width: textWidth + 16, height: 32)
         } else if collectionView == filteredRecipesCollectionView {
-            let width = (collectionView.frame.width - 32) / 2 // Two columns
-            return CGSize(width: width, height: width) // Adjust height for title
+            let width = (collectionView.frame.width - 32) / 2
+            return CGSize(width: width, height: width)
         }
         return CGSize.zero
     }
@@ -256,29 +247,23 @@ extension SearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayo
 extension SearchVC: FilterCellDelegate {
     func didTapFilterButton(title: String) {
         if let index = filters.firstIndex(of: title) {
-            // Toggle selection
             if selectedFiltersList.contains(title) {
                 selectedFiltersList.removeAll { $0 == title }
             } else {
                 selectedFiltersList.append(title)
             }
 
-            // Update filtered recipes or show recent searches
             if selectedFiltersList.isEmpty {
-                // Show recent searches if no filters are selected
                 filteredRecipesCollectionView.isHidden = true
                 recentSearchesTableView.isHidden = false
                 recentSearchLabel.isHidden = false
             } else {
-                // Filter recipes that match any selected filters
                 filteredRecipes = recentSearches.filter { selectedFiltersList.contains($0.type) }
                 recentSearchesTableView.isHidden = true
                 recentSearchLabel.isHidden = true
                 filteredRecipesCollectionView.isHidden = false
                 filteredRecipesCollectionView.reloadData()
             }
-
-            // Reload the collection view to update cell appearance
             filtersCollectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
         }
     }

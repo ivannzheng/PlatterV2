@@ -81,7 +81,4 @@ Edit Profile:
 
 <img src="https://github.com/user-attachments/assets/28d438f2-c89b-4094-9433-269cd09a908c" width="300" />
 
-## Note to Grader
 
-- We finished the frontend and backend independently but had trouble accessing the URL to connect them.
-- We did not have an assigned designer but still worked on the designs independently.

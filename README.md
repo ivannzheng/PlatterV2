@@ -32,22 +32,6 @@ In theory, users would be able to join specific groups or cooking communities. I
 
 The profile page shows a user's profile picture, name, username, interests (which could be used for "Recommended For You"), and saved posts. When a user saves a post, it appears on their profile. The name and username can also be edited.
 
-## Hack Requirements:
-
-### Design
-
-[Figma](https://www.figma.com/design/IY607DHT0Dp7k0NHTI1qEs/AppDev-Hack-Challenge-FA-'24?node-id=36-87&t=ExTSXUPw6uJYctGA-1)
-
-### iOS
-- Multiple screens that you can navigate between: 9 screens to navigate between: navigation bar, home page, detailed recipe view, search bar, filter categories, groups page, create a post, profile, edit profile
-- At least one scrollable view: 5 scrollable views: recipes on home page scroll horizontally, filters in search bar scroll horizontally, groups page scrolls vertically, different group names scroll horizontally, saved recipes on profile page scroll vertically
-- Networking integration with a backend API: was not given backend url, used dummy data, and put "placeholder" in NetworkManager
-
-### Backend
-- At least 4 routes (1 must be GET, 1 must be POST, 1 must be DELETE): Get recipes route, post recipes route (which adds a recipe to the recipe database), and a delete recipe route (which removes it)
-- At least 2 tables in database with a relationship between them: The recipes table and the saved recipes table: when a user saved a recipe, it would also be added to the saved recipes table
-- API specification explaining each implemented route
-
 ## Screens
 Home Screen:
 
